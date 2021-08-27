@@ -3,4 +3,6 @@
 void draw_gate1();
 void display_map1();
 void display_map2();
-void move1(int x, int y);
+void drawcar(int x, int y, int is_left);
+void move(int x, int y);
+void character_move(int x, int y);
