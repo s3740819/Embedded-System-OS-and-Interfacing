@@ -91,7 +91,7 @@ void main(){
 			welcome_screen_handler(c);
 		}
 		else if (stage == 1 || stage == 2){
-			main_game1_handler(c);
+			main_game_handler(c);
 		}
 		if (c == 27) uart_puts("OUT!");
 	}
