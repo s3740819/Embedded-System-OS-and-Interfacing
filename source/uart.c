@@ -54,7 +54,6 @@ void uart_sendc(unsigned char c) {
  */
 char uart_getc() {
     char c;
-
     if ((*AUX_MU_LSR & 0x01)){
 		/* read it and return */
 		c = (char)(*AUX_MU_IO);
