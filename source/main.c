@@ -11,9 +11,9 @@ void welcome_screen_handler(char c){
 	if (c == 'a' || c == 'A'){
 		if (animal > 0) {
 			display_background(); 
-			display_character(280,110, 0);
-			display_character(490,110, 1);
-			display_character(700,110, 2);
+			display_avatars(280,110, 0);
+			display_avatars(490,110, 1);
+			display_avatars(700,110, 2);
 			animal--;
 			select(animal);
 		}
@@ -21,9 +21,9 @@ void welcome_screen_handler(char c){
 	else if (c == 'd' || c== 'D'){
 		if (animal < 2) {
 			display_background(); 
-			display_character(280,110, 0);
-			display_character(490,110, 1);
-			display_character(700,110, 2);
+			display_avatars(280,110, 0);
+			display_avatars(490,110, 1);
+			display_avatars(700,110, 2);
 			animal ++;
 			select(animal);
 		}
@@ -84,9 +84,9 @@ void main(){
 	uart_init();
 	framebf_init();
 	display_background(); 
-	display_character(280,110, 0);
-	display_character(490,110, 1);
-	display_character(700,110, 2);
+	display_avatars(280,110, 0);
+	display_avatars(490,110, 1);
+	display_avatars(700,110, 2);
 	select(animal);
 	
 	
