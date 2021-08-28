@@ -1,11 +1,11 @@
 #include "../header/main.h"
-#include "../header/display.h"
-#include "../header/welcomepic.h"
-#include "../header/endpic.h"
-#include "../header/framebf.h"
+#include "../header/picture/welcomepic.h"
+#include "../header/picture/endpic.h"
 #include "../header/uart.h"
+#include "../header/framebf.h"
 
-enum gameState {welcome, round1, ending};
+
+enum gameState {welcome, round1, round2, ending};
 enum gameState state = welcome;
 int animal = 0;
 int animal_x = 100;
@@ -13,24 +13,24 @@ int animal_y = 710;
 int car_x[] = {0,933,600,500,0,300,800,150};//starting x position of each car
 int car_y[] = {102,164,226,288,350,464,526,588}; //lanes
 
-void main_game_handler(char c) {
+void main_game_handler(char c, int round) {
 	if (c == 'a' || c == 'A'){
 		if (animal_x - 20 >= 0) {
-			avatarMove(animal_x, animal_y);
+			avatarMove(animal_x, animal_y, round);
 			animal_x -= 20;
 			drawAvatar(animal_x,animal_y, animal);
 		}
 	}
 	else if (c == 'd' || c== 'D'){
 		if (animal_x + 20 <= 986){
-			avatarMove(animal_x, animal_y);
+			avatarMove(animal_x, animal_y, round);
 			animal_x += 20;
 			drawAvatar(animal_x,animal_y, animal);
 		}
 	}
 	if (c == 'w' || c == 'W'){
 		if (animal_y - 20 >= 0) {
-			avatarMove(animal_x, animal_y);
+			avatarMove(animal_x, animal_y, round);
 			animal_y -= 20;
 			drawAvatar(animal_x,animal_y, animal);
 
@@ -38,20 +38,24 @@ void main_game_handler(char c) {
 	}
 	else if (c == 's' || c== 'S'){
 		if (animal_y + 20 <= 710){
-			avatarMove(animal_x, animal_y);
+			avatarMove(animal_x, animal_y, round);
 			animal_y += 20;
 			drawAvatar(animal_x,animal_y, animal);
 		}
 	}
 	if (animal_y <= 10 && animal_x + 60 >= 995 ) {
-			displayPicture(1024, 768, endscr);
-			animal_x = 100;
-			animal_y = 710;
-			state = ending;
-			//animal_x= 100;
-			//animal_y = 590;
-			//display_map2();
-			//drawAvatar(animal_x,animal_y, animal);
+			if (round == 1){
+				state = round2;
+				animal_x = 100;
+				animal_y = 710;
+				display_map2();
+				drawAvatar(animal_x,animal_y, animal);
+			}
+			else{
+				displayPicture(1024, 768, endscr);
+				state = ending;
+			}
+			
 	}
 }
 
@@ -97,6 +101,11 @@ void StateMachine() {
 
 	while(c != 27) {
 		c = uart_getc();
+		
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(r1));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(r2));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(r3));
+		
 		switch(state) {
 		case welcome:
 			if (c == 'a' || c == 'A') {
@@ -127,12 +136,8 @@ void StateMachine() {
 			break;
 
 		case round1:
-			asm volatile ("mrs %0, cntpct_el0" : "=r"(r1));
-			asm volatile ("mrs %0, cntpct_el0" : "=r"(r2));
-			asm volatile ("mrs %0, cntpct_el0" : "=r"(r3));
-
 			if (r1 >= t1 && c != 0) {
-				main_game_handler(c);
+				main_game_handler(c, 1);
 
 				// get the current counter frequency
 				asm volatile ("mrs %0, cntfrq_el0" : "=r"(f1));
@@ -166,7 +171,21 @@ void StateMachine() {
 			}
 
 			break;
-
+			
+			
+		case round2:
+			if (r1 >= t1 && c != 0) {
+				main_game_handler(c, 2);
+	
+				// get the current counter frequency
+				asm volatile ("mrs %0, cntfrq_el0" : "=r"(f1));
+				// read the current counter
+				asm volatile ("mrs %0, cntpct_el0" : "=r"(t1));
+				// calculate expire value for counter
+				t1+=((f1/1000)*90000)/1000;
+			}
+	
+			break;
 
 		case ending:
 			if (c == '\n') {

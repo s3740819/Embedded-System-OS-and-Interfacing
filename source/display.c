@@ -1,8 +1,9 @@
 #include "../header/display.h"
 #include "../header/framebf.h"
-#include "../header/avatar.h"
-#include "../header/map1.h"
-#include "../header/objects.h"
+#include "../header/picture/avatar.h"
+#include "../header/picture/map1.h"
+#include "../header/picture/map2.h"
+#include "../header/picture/objects.h"
 
 void displayPicture(int width, int height, const unsigned int picture[]) {
 	for (int y = 0, x = 0, i = 0; y < height; i++) {
@@ -77,11 +78,13 @@ void drawAvatar(int x, int y, int animal){
 	}
 }
 
-void avatarMove(int x, int y){
+void avatarMove(int x, int y, int round){
 	int startx = x;
 	int starty = y;
 	for (int i = (1024*starty) + startx; y < 79+starty; i++ ){
-		drawPixelARGB32(x, y, map1[i]);
+		if (round == 1) drawPixelARGB32(x, y, map1[i]);
+		else drawPixelARGB32(x, y, map2[i]);
+		
 		x++;
 		if (x == startx + 60 || x == 1024){
 			y ++;
@@ -89,7 +92,7 @@ void avatarMove(int x, int y){
 			i = (1024*y) + x;
 		}
 	}
-	if (x+60 >=973 && y<= 60){
+	if (x+60 >=965 && y<= 60){
 		draw_gate1();
 	}
 }
@@ -97,6 +100,19 @@ void avatarMove(int x, int y){
 void display_map1(){
 	for (int y = 0, x = 0, i = 0; y < 768; i++ ){
 		drawPixelARGB32(x, y, map1[i]);
+		x++;
+		if (x == 1024){
+			y ++;
+			x = 0;
+		}
+	}
+	draw_gate1();
+
+}
+
+void display_map2(){
+	for (int y = 0, x = 0, i = 0; y < 768; i++ ){
+		drawPixelARGB32(x, y, map2[i]);
 		x++;
 		if (x == 1024){
 			y ++;
