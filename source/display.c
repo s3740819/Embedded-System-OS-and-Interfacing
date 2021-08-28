@@ -78,21 +78,34 @@ void drawAvatar(int x, int y, int animal){
 	}
 }
 
+void drawLog(int x, int y){
+	int startx = x;
+	int starty = y;
+	for (int i = 0; y < 60 + starty; i++ ){
+		if (log[i] != 0x00ffffff) drawPixelARGB32(x, y, log[i]);
+		x++;
+		if (x == startx + 160){
+			y ++;
+			x = startx;
+		}
+	}
+}
+
 void avatarMove(int x, int y, int round){
 	int startx = x;
 	int starty = y;
-	for (int i = (1024*starty) + startx; y < 79+starty; i++ ){
+	for (int i = (1024*starty) + startx; y < 50+starty; i++ ){
 		if (round == 1) drawPixelARGB32(x, y, map1[i]);
 		else drawPixelARGB32(x, y, map2[i]);
 		
 		x++;
-		if (x == startx + 60 || x == 1024){
+		if (x == startx + 38 || x == 1024){
 			y ++;
 			x = startx;
 			i = (1024*y) + x;
 		}
 	}
-	if (x+60 >=965 && y<= 60){
+	if (x+38 >=965 && y<= 60){
 		draw_gate1();
 	}
 }
@@ -151,11 +164,12 @@ void drawCar(int x, int y, int is_left) { //draw a car of 90x50 pixels at x and 
 	}
 }
 
-void carMove(int x, int y) { //draw a 90x50 pixel background where a car was previously drawn
+void carMove(int x, int y, int round) { //draw a 90x50 pixel background where a car was previously drawn
 	int startx = x;
 	int starty = y;
 	for (int i = (1024*starty) + startx; y < 50+starty; i++ ){
-		drawPixelARGB32(x, y, map1[i]);
+		if (round == 1) drawPixelARGB32(x, y, map1[i]);
+		else drawPixelARGB32(x, y, map2[i]);
 		x++;
 		if (x == startx + 90){
 			y ++;
@@ -163,6 +177,21 @@ void carMove(int x, int y) { //draw a 90x50 pixel background where a car was pre
 			i = (1024*y) + x;
 		}
 	}
+}
+
+void logMove(int x, int y) { //draw a 90x50 pixel background where a car was previously drawn
+	int startx = x;
+	int starty = y;
+	for (int i = (1024*starty) + startx; y < 60+starty; i++ ){
+		drawPixelARGB32(x, y, map2[i]);
+		x++;
+		if (x == startx + 160){
+			y ++;
+			x = startx;
+			i = (1024*y) + x;
+		}
+	}
+	
 }
 
 

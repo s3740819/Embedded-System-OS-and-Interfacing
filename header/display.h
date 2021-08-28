@@ -7,5 +7,7 @@ void draw_gate1();
 void display_map1();
 void display_map2();
 void display_gate1();
+void drawLog(int x, int y);
 void drawCar(int x, int y, int is_left);
-void carMove(int x, int y);
+void carMove(int x, int y, int round);
+void logMove(int x, int y);
