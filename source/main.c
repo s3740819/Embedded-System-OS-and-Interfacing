@@ -96,9 +96,9 @@ void StateMachine() {
 	t3+=((f3/1000)*50000)/1000; //unused (yet)
 
 	while(c != 27) {
+		c = uart_getc();
 		switch(state) {
 		case welcome:
-			c = uart_getc();
 			if (c == 'a' || c == 'A') {
 				if (animal > 0) {
 					displayPicture(1024, 768, welcomescr);
@@ -131,8 +131,7 @@ void StateMachine() {
 			asm volatile ("mrs %0, cntpct_el0" : "=r"(r2));
 			asm volatile ("mrs %0, cntpct_el0" : "=r"(r3));
 
-			if (r1 >= t1) {
-				c = uart_getc();
+			if (r1 >= t1 && c != 0) {
 				main_game_handler(c);
 
 				// get the current counter frequency
@@ -170,7 +169,6 @@ void StateMachine() {
 
 
 		case ending:
-			c = uart_getc();
 			if (c == '\n') {
 				displayPicture(1024, 768, welcomescr);
 				display_avatars(280,110, 0);
