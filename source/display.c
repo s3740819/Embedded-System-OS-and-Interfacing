@@ -4,11 +4,10 @@
 #include "../header/map1.h"
 #include "../header/objects.h"
 
-void displayPicture(int width, int height, unsigned int *picture) {
+void displayPicture(int width, int height, const unsigned int picture[]) {
 	for (int y = 0, x = 0, i = 0; y < height; i++) {
-		drawPixelARGB32(x, y, *picture);
+		drawPixelARGB32(x, y, picture[i]);
 		x++;
-		picture++;
 		if (x == width){
 			y++;
 			x = 0;
