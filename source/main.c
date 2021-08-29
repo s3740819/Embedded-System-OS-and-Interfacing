@@ -116,6 +116,16 @@ void main_game_handler(char c, int round) {
 				drawAvatar(animal_x,animal_y, animal);
 			}
 			else{
+				car_y[7] = 588;
+				car_y[6] = 526;
+				car_y[5] = 464;
+				car_y[4] = 350;
+				car_y[3] = 288;
+				car_y[2] = 226;
+				car_y[1] = 164;
+				car_y[0] = 102;
+				animal_x = 100;
+				animal_y = 710;
 				displayPicture(1024, 768, endscr);
 				state = ending;
 			}
@@ -172,9 +182,9 @@ void StateMachine() {
 	// calculate expire value for counter
 	t1+=((f1/1000)*90000)/1000;
 	t2+=((f2/1000)*50000)/1000;
-	t3+=((f3/1000)*40000)/1000; //unused (yet)
-	t4+=((f4/1000)*45000)/1000; //unused (yet)
-	t5+=((f5/1000)*80000)/1000; //unused (yet)
+	t3+=((f3/1000)*40000)/1000; 
+	t4+=((f4/1000)*45000)/1000; 
+	t5+=((f5/1000)*80000)/1000; 
 	
 	while(c != 27) {
 		c = uart_getc();
@@ -215,17 +225,6 @@ void StateMachine() {
 			break;
 
 		case round1:
-			if (r1 >= t1 && c != 0) {
-				main_game_handler(c, 1);
-
-				// get the current counter frequency
-				asm volatile ("mrs %0, cntfrq_el0" : "=r"(f1));
-				// read the current counter
-				asm volatile ("mrs %0, cntpct_el0" : "=r"(t1));
-				// calculate expire value for counter
-				t1+=((f1/1000)*90000)/1000;
-			}
-
 			// car run
 			if (r2 >= t2) {
 				for (int i = 0; i < 8; i++) { // 8 cars on street lanes
@@ -248,14 +247,10 @@ void StateMachine() {
 				// calculate expire value for counter
 				t2+=((f2/1000)*50000)/1000;
 			}
-
-			break;
 			
-			
-		case round2:
 			if (r1 >= t1 && c != 0) {
-				main_game_handler(c, 2);
-	
+				main_game_handler(c, 1);
+
 				// get the current counter frequency
 				asm volatile ("mrs %0, cntfrq_el0" : "=r"(f1));
 				// read the current counter
@@ -263,7 +258,11 @@ void StateMachine() {
 				// calculate expire value for counter
 				t1+=((f1/1000)*90000)/1000;
 			}
+
+			break;
 			
+			
+		case round2:
 			// car run
 			if (r3 >= t3) {
 				for (int i = 0; i < 6; i++) { // 8 cars on street lanes
@@ -330,6 +329,16 @@ void StateMachine() {
 				asm volatile ("mrs %0, cntpct_el0" : "=r"(t5));
 				// calculate expire value for counter
 				t5+=((f5/1000)*80000)/1000;
+			}
+			if (r1 >= t1 && c != 0) {
+				main_game_handler(c, 2);
+	
+				// get the current counter frequency
+				asm volatile ("mrs %0, cntfrq_el0" : "=r"(f1));
+				// read the current counter
+				asm volatile ("mrs %0, cntpct_el0" : "=r"(t1));
+				// calculate expire value for counter
+				t1+=((f1/1000)*90000)/1000;
 			}
 	
 			break;
