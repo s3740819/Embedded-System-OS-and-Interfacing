@@ -64,29 +64,30 @@ void framebf_init(){
 		uart_puts("Unable to get a frame buffer with provided setting\n");
 	}
 }
-void drawPixelARGB32(int x, int y, unsigned int attr){
+void drawPixelARGB32(int x, int y, unsigned int attr, int is_gray){
 	int offs = (y * pitch) + (COLOR_DEPTH/8 * x);
-	/*
-	 * //Access and assign each byte
-	 * *(fb+ offs    ) = (attr>> 0 ) & 0xFF; //BLUE
-	 * *(fb+ offs + 1) = (attr>> 8 ) & 0xFF; //GREEN
-	 * *(fb+ offs + 2) = (attr>> 16) & 0xFF; //RED
-	 * *(fb+ offs + 3) = (attr>> 24) & 0xFF; //ALPHA
-	 * */
-	//Access 32-bit together
-	*((unsigned int*)(fb + offs)) = attr;
+
+	if (!is_gray){
+		*((unsigned int*)(fb + offs)) = attr;
+	}
+	else{
+		//Access and assign each byte
+		*(fb+ offs    ) = ((attr>> 0 ) & 0xFF)*0.0722 + ((attr>> 8 ) & 0xFF)*0.7152 + ((attr>> 16) & 0xFF)*0.2126; //BLUE
+		*(fb+ offs + 1) = ((attr>> 0 ) & 0xFF)*0.0722 + ((attr>> 8 ) & 0xFF)*0.7152 + ((attr>> 16) & 0xFF)*0.2126; //GREEN
+		*(fb+ offs + 2) = ((attr>> 0 ) & 0xFF)*0.0722 + ((attr>> 8 ) & 0xFF)*0.7152 + ((attr>> 16) & 0xFF)*0.2126; //RED
+		*(fb+ offs + 3) = ((attr>> 24) & 0xFF); //ALPHA
+	}
 }
 
 void drawRectARGB32(int x1, int y1, int x2, int y2, unsigned int attr, int fill)
 {
-	for (int y = y1; y <= y2; y++ )
+	for (int y = y1; y <= y2; y++)
 	for (int x = x1; x <= x2; x++) {
 		if ((x == x1 || x == x2) || (y == y1 || y == y2))
-		drawPixelARGB32(x, y, attr);
+		drawPixelARGB32(x, y, attr, 0);
 		else if (fill)
-		drawPixelARGB32(x, y, attr);
+		drawPixelARGB32(x, y, attr, 0);
 	}
 }
-
 
 
