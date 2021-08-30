@@ -42,15 +42,16 @@ void main_game_handler(char c, int round) {
 	if (c == 'w' || c == 'W'){
 		if (animal_y - 20 >= 0) {
 			avatarMove(animal_x, animal_y, round);
-			if(animal_y == 230 && round ==2){
-				if(animal_x > log_x[1] && animal_x < log_x[1] + 160){
+			if(animal_y == 230 && round ==2) { //on first log
+				if(animal_x > log_x[1] && animal_x < log_x[1] + 160) { //avatar still on the log?
 					animal_y = 170;
 					animal_x = log_x[1] + 60;
 					log_contain[1] = 1;
+					//log_contain[0] = 0;
 				}
 				else is_lose = 1;
 			}
-			else if(animal_y == 170 && round ==2){
+			else if(animal_y == 170 && round ==2){ //on second log
 				if(animal_x > log_x[0] && animal_x < log_x[0] + 160){
 					drawLog(log_x[1], log_y[1], is_lose);
 					animal_y = 90;
@@ -112,12 +113,12 @@ void reset(int round){
 	if (round == 1){
 		state = round2;
 		
-		car_y[0] = 290;
-		car_y[1] = 352;
-		car_y[2] = 414;
-		car_y[3] = 478;
-		car_y[4] = 538;
-		car_y[5] = 600;
+		car_y[0] = 292;
+		car_y[1] = 354;
+		car_y[2] = 416;
+		car_y[3] = 480;
+		car_y[4] = 540;
+		car_y[5] = 602;
 
 		animal_x = 100;
 		animal_y = 710;
@@ -151,14 +152,17 @@ void reset(int round){
 			displayPicture(1024, 768, endscr);
 			state = winning;
 		}
-		else{
+		else {
 			displayPicture(1024, 768, welcomescr);
 			display_avatars(280,110, 0);
 			display_avatars(490,110, 1);
 			display_avatars(700,110, 2);
+			animal = 0;
+			select(0);
+			log_contain[0] = 0;
+			log_contain[1] = 0;
 			state = welcome;
 		}
-		select(animal);
 	}
 }
 
@@ -223,16 +227,16 @@ void carRun(int round){
 }
 
 void logRun(){
-	if(r4 >= t4){
+	if(r4 >= t4){// second log moving
 		logMove(log_x[0], log_y[0], is_lose); //clear the previous drawing
 		log_x[0] += 20; // redraw a consecutive image horizontally
-		if (log_x[0] > 924) {
-			if (log_contain[0] == 1) is_lose = 1;
+		if (log_x[0] > 924) { // if the log is out of sight but avatar still on it
+			if (log_contain[0] == 1) is_lose = 1; //losing
 			log_x[0] = 0;
 		}
-		drawLog(log_x[0], log_y[0], is_lose); // car heading right
+		drawLog(log_x[0], log_y[0], is_lose);
 		
-		if(log_contain[0] == 1){
+		if(log_contain[0] == 1){ //containing the avatar
 			animal_x = log_x[0] + 60;
 			drawAvatar(animal_x,animal_y, animal);
 		}
@@ -245,14 +249,14 @@ void logRun(){
 		t4+=((f4/1000)*45000)/1000;
 	}
 	
-	if(r5 >= t5){
+	if(r5 >= t5){ // first log moving
 		logMove(log_x[1], log_y[1], is_lose); //clear the previous drawing
 		log_x[1] -= 20; // redraw a consecutive image horizontally
 		if (log_x[1] < 0){
 			if (log_contain[1] == 1) is_lose = 1;
 			log_x[1] = 863;
 		}
-		drawLog(log_x[1], log_y[1], is_lose); // car heading right
+		drawLog(log_x[1], log_y[1], is_lose);
 		
 		if(log_contain[1] == 1){
 			animal_x = log_x[1] + 60;
