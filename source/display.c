@@ -120,7 +120,7 @@ void avatarMove(int x, int y, int round){
 			i = (1024*y) + x;
 		}
 	}
-	if (x+38 >=965 && y<= 60){
+	if (startx+38 >=965 && starty<= 80){
 		draw_gate1();
 	}
 }
