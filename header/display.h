@@ -11,5 +11,5 @@ void drawCar(int x, int y, int is_left, int is_lose);
 void carMove(int x, int y, int round, int is_lose);
 void logMove(int x, int y, int is_lose);
 void display_skull();
-void drawChar(char c, int x1, int y1, unsigned int attr);
+void drawChar(unsigned char c, int x1, int y1, unsigned int attr);
 void drawString(char *s, int x1, int y1, unsigned int attr);

@@ -209,7 +209,7 @@ void logMove(int x, int y, int is_lose) { //draw a 90x50 pixel background where 
 	
 }
 
-void drawChar(char c, int x1, int y1, unsigned int attr) {
+void drawChar(unsigned char c, int x1, int y1, unsigned int attr) {
 	int a = 0;
 	for(int y = y1; y < (y1 + 8); y++) {
 		int b = 0;
@@ -228,7 +228,7 @@ void drawString(char *s, int x1, int y1, unsigned int attr) {
 	int y = y1;
 	while(*s) {
 		drawChar(*s, x, y, attr);
-		*s++;
+		s++;
 		x+=8;
 	}
 }

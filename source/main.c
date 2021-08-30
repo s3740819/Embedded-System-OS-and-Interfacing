@@ -1,5 +1,6 @@
 #include "../header/main.h"
 #include "../header/game.h"
+#include "../header/display.h"
 #include "../header/uart.h"
 #include "../header/framebf.h"
 #include "../header/video.h"
