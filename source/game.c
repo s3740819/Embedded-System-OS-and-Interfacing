@@ -156,10 +156,9 @@ void reset(int round){
 			display_avatars(280,110, 0);
 			display_avatars(490,110, 1);
 			display_avatars(700,110, 2);
-			animal = 0;
-			select(0);
 			state = welcome;
 		}
+		select(animal);
 	}
 }
 
