@@ -4,6 +4,7 @@
 #include "../header/picture/map1.h"
 #include "../header/picture/map2.h"
 #include "../header/picture/objects.h"
+#include "../header/picture/font.h"
 
 void displayPicture(int width, int height, const unsigned int picture[]) {
 	for (int y = 0, x = 0, i = 0; y < height; i++) {
@@ -120,7 +121,7 @@ void avatarMove(int x, int y, int round){
 			i = (1024*y) + x;
 		}
 	}
-	if (startx+38 >=965 && starty<= 80){
+	if (x+38 >=965 && y<= 60){
 		draw_gate1();
 	}
 }
@@ -206,6 +207,30 @@ void logMove(int x, int y, int is_lose) { //draw a 90x50 pixel background where 
 		}
 	}
 	
+}
+
+void drawChar(char c, int x1, int y1, unsigned int attr) {
+	int a = 0;
+	for(int y = y1; y < (y1 + 8); y++) {
+		int b = 0;
+		for(int x = x1; x < (x1 + 8); x++) {
+			if((font[c][a] & (1 << b)) == (0xFF & (1 << b))) {
+				drawPixelARGB32(x, y, attr, 0);
+			}
+			b++;
+		}
+		a++;
+	}
+}
+
+void drawString(char *s, int x1, int y1, unsigned int attr) {
+	int x = x1;
+	int y = y1;
+	while(*s) {
+		drawChar(*s, x, y, attr);
+		*s++;
+		x+=8;
+	}
 }
 
 
