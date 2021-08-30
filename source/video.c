@@ -3,6 +3,7 @@
 #include "../header/picture/background.h"
 #include "../header/video.h"
 #include "../header/framebf.h"
+#include "../header/uart.h"
 
 /**
  * Wait N microsec (ARM CPU only)
@@ -20,7 +21,7 @@ void wait_msec(unsigned int n)
 }
 
 void display_video(){
-	
+	char c = 0;
 	for (unsigned int i = 0, x = 177, y =40, frame = 0 ; frame < 80; i++){
 		if (frame == 40) i = 0;
 		if (frame >= 40) drawPixelARGB32(x, y, frame2[i], 0);
@@ -31,6 +32,8 @@ void display_video(){
 			x = 177;
 		}
 		if (y == 440){
+			c = uart_getc();
+			if(c == 27) break;
 			y = 40;
 			frame ++;
 			wait_msec(50000);
@@ -53,7 +56,15 @@ void display_background(){
 void execute_video(){
 	display_background();
 	char c = 0;
-	while(c != '\n'){
+	int escape = 0;
+	while(c != 27){
+		c = uart_getc();
+		if(c == 'g' || c == 'f') break;
+		else if(c == 'v') escape = 0;
+		if(!escape)
 		display_video();
 	}
+	escape = 1;
+	drawRectARGB32(0,0,1024,768,0x00000000,1); //Clear screen
+	uart_puts("Video ended.");
 }
