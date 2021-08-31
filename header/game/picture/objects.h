@@ -1,7 +1,7 @@
-extern const unsigned int hole[];
-extern const unsigned int car_right[];
-extern const unsigned int car_left[];
-extern const unsigned int log[];
+const unsigned int hole[];
+const unsigned int car_right[];
+const unsigned int car_left[];
+const unsigned int log[];
 
 const unsigned int hole[]={
 		// 'Blackhole-icon', 50x50px

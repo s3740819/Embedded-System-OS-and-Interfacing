@@ -1,10 +1,10 @@
-extern const unsigned int foxface[];
-extern const unsigned int bearface[];
-extern const unsigned int dogface[];
-extern const unsigned int fox[];
-extern const unsigned int bear[];
-extern const unsigned int dog[];
-extern const unsigned int dead_ava[];
+const unsigned int foxface[];
+const unsigned int bearface[];
+const unsigned int dogface[];
+const unsigned int fox[];
+const unsigned int bear[];
+const unsigned int dog[];
+const unsigned int dead_ava[];
 
 const unsigned int dead_ava[]={
 		// 'd1', 300x300px
