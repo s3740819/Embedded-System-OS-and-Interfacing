@@ -164,13 +164,19 @@ void draw_gate1(){
 }
 
 void drawCar(int x, int y, int is_left, int is_lose) { //draw a car of 90x50 pixels at x and y on the screen
+	int start_index = 0;
+	if (y >380) start_index = 4500;
 	int startx = x;
 	int starty = y;
-	for (int i = 0; y < 50 + starty; i++ ){
+	for (int i = start_index; y < 50 + starty; i++ ){
 		if (is_left){
 			if (car_left[i] < 8066061) drawPixelARGB32(x, y, car_left[i], is_lose);
 		}
-		else if (car_right[i] < 8066061) drawPixelARGB32(x, y, car_right[i], is_lose);
+		else if (car_right[i] != 0x00ffffff){
+			if (starty < 380 && car_right[i] >= 8066061) goto skip;
+			drawPixelARGB32(x, y, car_right[i], is_lose);
+		}
+		skip:
 		x++;
 		if (x == startx + 90){
 			y ++;

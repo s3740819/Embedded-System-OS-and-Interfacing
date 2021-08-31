@@ -116,9 +116,9 @@ void reset(int round){
 		car_y[0] = 292;
 		car_y[1] = 354;
 		car_y[2] = 416;
-		car_y[3] = 480;
-		car_y[4] = 540;
-		car_y[5] = 602;
+		car_y[3] = 478;
+		car_y[4] = 538;
+		car_y[5] = 600;
 
 		animal_x = 100;
 		animal_y = 710;
