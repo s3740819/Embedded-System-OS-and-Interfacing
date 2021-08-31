@@ -4,6 +4,7 @@
 #include "../header/uart.h"
 #include "../header/framebf.h"
 #include "../header/video.h"
+#include "../header/picture_task.h"
 
 void main(){
 	uart_init();
@@ -16,6 +17,12 @@ void main(){
 		}
 		else if (c == 'v'){
 			execute_video();
+		}
+		else if (c == 'p'){
+			display_pic();
+		}
+		else if (c == 's'){
+			execute_scrollable_pic();
 		}
 		else if(c == 'f') {
 			drawString("Nguyen Le - s3777242", 100, 100, 0x00FF0000);

@@ -90,4 +90,14 @@ void drawRectARGB32(int x1, int y1, int x2, int y2, unsigned int attr, int fill)
 	}
 }
 
+void resetScreen(){
+	for (int x = 0, y=0; y <768 ; x++){
+		if (x == 1024){
+			x = 0;
+			y++;
+		}
+		drawPixelARGB32(x, y, 0x000000,0);
+	}
+}
+
 
