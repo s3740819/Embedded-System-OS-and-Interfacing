@@ -107,11 +107,11 @@ void drawLog(int x, int y, int is_lose){
 	}
 }
 
-int isTree(int x, int y){
+int isTree(int x, int y, int round){
 	int startx = x;
 	int starty = y;
 	for (int i = (1024*starty) + startx; y < 50+starty; i++ ){
-		if(map1_temp[i] == 0x00ffffff) return 1;
+		if((map1_temp[i] == 0x00ffffff && round == 1) || (map2_temp[i] == 0 && round == 2)) return 1;
 		x++;
 		if (x == startx + 38 || x == 1024){
 			y ++;
@@ -168,7 +168,6 @@ void display_map2(int is_lose){
 
 void draw_gate1(){
 	for (int i = 0, x = 965, y = 0; y < 50; i++){
-		//if(hole[i] > 16777215 || hole[i] < 12900000) drawPixelARGB32(x, y, hole[i]);
 		if(hole[i] < 12900000) drawPixelARGB32(x, y, hole[i], 0);
 		x++;
 		if (x == 1015){
