@@ -79,16 +79,6 @@ void drawPixelARGB32(int x, int y, unsigned int attr, int is_gray){
 	}
 }
 
-void drawRectARGB32(int x1, int y1, int x2, int y2, unsigned int attr, int fill)
-{
-	for (int y = y1; y <= y2; y++)
-	for (int x = x1; x <= x2; x++) {
-		if ((x == x1 || x == x2) || (y == y1 || y == y2))
-		drawPixelARGB32(x, y, attr, 0);
-		else if (fill)
-		drawPixelARGB32(x, y, attr, 0);
-	}
-}
 
 void resetScreen(){
 	for (int x = 0, y=0; y <768 ; x++){

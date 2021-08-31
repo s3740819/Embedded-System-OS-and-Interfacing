@@ -1,7 +1,6 @@
-#include "../header/display.h"
-#include "../header/game.h"
-#include "../header/picture/welcomepic.h"
-#include "../header/picture/endpic.h"
+#include "../header/game/game.h"
+#include "../header/game/picture/welcomepic.h"
+#include "../header/game/picture/endpic.h"
 #include "../header/uart.h"
 #include "../header/framebf.h"
 
@@ -425,6 +424,5 @@ void StateMachine() {
 			break;
 		}
 	}
-	uart_puts("OUT!");
-	drawRectARGB32(0,0,1024,768,0x00000000,1); //Clear screen
+	resetScreen();
 }

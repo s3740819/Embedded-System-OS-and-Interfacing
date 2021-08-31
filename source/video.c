@@ -1,7 +1,7 @@
-#include "../header/picture/frame1.h"
-#include "../header/picture/frame2.h"
-#include "../header/picture/background.h"
-#include "../header/video.h"
+#include "../header/video/picture/frame1.h"
+#include "../header/video/picture/frame2.h"
+#include "../header/video/picture/background.h"
+#include "../header/video/video.h"
 #include "../header/framebf.h"
 #include "../header/uart.h"
 
@@ -33,12 +33,12 @@ int display_video(){
 		if (y == 440){
 			y = 40;
 			frame ++;
-			if (uart_getc() == 27) return 1;
+			if (uart_getc() == 27) return 0;
 			wait_msec(50000);
 		}
 		
 	}
-	return 0;
+	return 1;
 }
 
 void display_background(){
@@ -54,9 +54,7 @@ void display_background(){
 
 void execute_video(){
 	display_background();
-	while(1){
-		if(display_video()) break;
-	}
-	drawRectARGB32(0,0,1024,768,0x00000000,1); //Clear screen
-	uart_puts("Video ended.");
+	while(display_video());
+	
+	resetScreen();
 }

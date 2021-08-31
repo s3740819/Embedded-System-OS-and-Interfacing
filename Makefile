@@ -12,7 +12,7 @@ CFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -nostartfiles
 LDFLAGS = -nostdlib -nostartfiles
 
 # make all
-all: $(BUILD_DIR)kernel8.img #set_title
+all: $(BUILD_DIR)kernel8.img set_title
 
 # convert .S file to .o file
 $(BUILD_DIR)start.o: $(SRC_DIR)start.S
@@ -41,5 +41,5 @@ test: all run
 
 # Set title for the command prompt 
 set_title:
-	TITLE BARE_OS-Bao Tran_S3740819
+	TITLE Bare Metal_ASSESSMENT3 
 	

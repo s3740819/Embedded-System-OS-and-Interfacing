@@ -1,10 +1,12 @@
-#include "../header/picture_task.h"
-#include "../header/picture/other_pictures.h"
+#include "../header/picture_tasks/picture_task.h"
+#include "../header/picture_tasks/picture/other_pictures.h"
 #include "../header/uart.h"
 #include "../header/framebf.h"
 
 
 void display_pic(){
+	resetScreen();
+
 	for (int x = 261, y= 133, i = 0; y < 633; i++){
 		drawPixelARGB32(x, y, picture[i], 0);
 		x++;
@@ -13,9 +15,7 @@ void display_pic(){
 			y++;
 		}
 	}
-	while(1){
-		if (uart_getc() == 27) break;
-	} 
+	while(uart_getc() != 27);
 	resetScreen();
 
 }
@@ -30,6 +30,17 @@ void display_scrollable_pic(int x, int y){
 			x = start_x;
 			y++;
 			i = (2351*y)+ x;
+		}
+	}
+	display_scroll_icon();
+}
+
+void display_scroll_icon(){
+	for (int x = 461, y = 567, i = 0; y < 667; x++, i++){
+		if (scroll_icon[i] < 0x202020) drawPixelARGB32(x, y, scroll_icon[i], 0);
+		if (x == 561){
+			x = 461;
+			y++;
 		}
 	}
 }
