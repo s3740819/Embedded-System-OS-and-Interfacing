@@ -107,6 +107,21 @@ void drawLog(int x, int y, int is_lose){
 	}
 }
 
+int isTree(int x, int y){
+	int startx = x;
+	int starty = y;
+	for (int i = (1024*starty) + startx; y < 50+starty; i++ ){
+		if(map1_temp[i] == 0x00ffffff) return 1;
+		x++;
+		if (x == startx + 38 || x == 1024){
+			y ++;
+			x = startx;
+			i = (1024*y) + x;
+		}
+	}
+	return 0;
+}
+
 void avatarMove(int x, int y, int round){
 	int startx = x;
 	int starty = y;

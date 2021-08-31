@@ -22,7 +22,7 @@ int is_lose = 0;
 
 void main_game_handler(char c, int round) {
 	if (c == 'a' || c == 'A'){
-		if (animal_x - 20 >= 0) {
+		if (animal_x - 20 >= 0 && !isTree(animal_x -20, animal_y)) {
 			if ((round == 2 && animal_y != 170 && animal_y != 90) || round == 1){
 				avatarMove(animal_x, animal_y, round);
 				animal_x -= 20;
@@ -31,7 +31,7 @@ void main_game_handler(char c, int round) {
 		}
 	}
 	else if (c == 'd' || c== 'D'){
-		if (animal_x + 20 <= 986){
+		if (animal_x + 20 <= 986 && !isTree(animal_x + 20, animal_y)){
 			if ((round == 2 && animal_y != 170 && animal_y != 90) || round == 1){
 				avatarMove(animal_x, animal_y, round);
 				animal_x += 20;
@@ -40,7 +40,7 @@ void main_game_handler(char c, int round) {
 		}
 	}
 	if (c == 'w' || c == 'W'){
-		if (animal_y - 20 >= 0) {
+		if (animal_y - 20 >= 0 && !isTree(animal_x, animal_y-20)) {
 			avatarMove(animal_x, animal_y, round);
 			if(animal_y == 230 && round ==2) { //on first log
 				if(animal_x > log_x[1] && animal_x < log_x[1] + 160) { //avatar still on the log?
@@ -73,7 +73,7 @@ void main_game_handler(char c, int round) {
 		}
 	}
 	else if (c == 's' || c== 'S'){
-		if (animal_y + 20 <= 710){
+		if (animal_y + 20 <= 710 && !isTree(animal_x, animal_y + 20)){
 			avatarMove(animal_x, animal_y, round);
 			if(animal_y == 30 && round ==2){
 				if(animal_x > log_x[0] && animal_x < log_x[0] + 160){
