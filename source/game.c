@@ -338,7 +338,7 @@ void carRun(int round){
 		if (r6 >= t6) {
 			for (int i = 0; i < 12; i++) { // 8 cars on street lanes
 				if(is_lose != 2) carMove(car_x[i], car_y[i],2, is_lose); //clear the previous drawing
-				if (i == 1 || i == 3 || i == 4 || i == 10 || i == 8) { // lane 2,3,8 from top
+				if (i == 1 || i == 3 || i == 4|| i == 6 || i == 7 || i == 9 || i == 11) { // lane 2,3,8 from top
 					car_x[i] -= 20; // redraw a consecutive image horizontally
 					
 					if (car_x[i] <= 0 && i < 6) car_x[i] = 400;
@@ -477,12 +477,12 @@ void reset(int round){
 		car_x[3] = 100;
 		car_x[4] = 400;
 		car_x[5] = 220;
-		car_x[6] = 615;
-		car_x[7] = 950;
-		car_x[8] = 880;
+		car_x[6] = 950;
+		car_x[7] = 615;
+		car_x[8] = 680;
 		car_x[9] = 515;
-		car_x[10] = 780;
-		car_x[11] = 800;
+		car_x[10] = 800;
+		car_x[11] = 510;
 		display_instruction(3);
 		display_map(3, is_lose);
 		drawAvatar(animal_x,animal_y, animal, is_goup);
