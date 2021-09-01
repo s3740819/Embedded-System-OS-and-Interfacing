@@ -50,9 +50,9 @@ void display_help(){
 	uart_puts("----------------------------------------------------\n");
 	uart_puts("game				Execute the game\n");
 	uart_puts("picture				Display a picture\n");
-	uart_puts("s-picture				Display a scrollable picture\n");
-	uart_puts("font				Display the fonts with teammenber's names\n");
-	uart_puts("video				Display the video\n");
+	uart_puts("s-picture			Display a scrollable picture\n");
+	uart_puts("font				Display team members' names with the OS font\n");
+	uart_puts("video				Display a video\n");
 	uart_puts("help				Display commands and descriptions\n\n");
 	uart_puts("***NOTE: "
 			"\n  Press ESC to exit the execution and return to the main menu!\n\n");
