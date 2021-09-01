@@ -373,6 +373,10 @@ void carRun(int round){
 }
 
 void logRun(){
+	if (is_lose){
+		log_contain[0] = 0;
+		log_contain[1] = 0;
+	}
 	if(r4 >= t4){// second log moving
 		logMove(log_x[0], log_y[0], is_lose); //clear the previous drawing
 		log_x[0] += 20; // redraw a consecutive image horizontally
