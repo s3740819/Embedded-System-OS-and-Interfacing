@@ -194,6 +194,7 @@ void display_map(int round, int is_lose){
 
 void draw_gate(int round){
 	int start_x = 0, start_y = 0;
+	
 	if (round < 3) start_x = 965;
 	else {
 		start_x = 520;
