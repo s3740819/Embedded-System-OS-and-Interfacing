@@ -72,20 +72,22 @@ void select(int animal){
 		}
 }
 
-void drawAvatar(int x, int y, int animal){
+void drawAvatar(int x, int y, int animal, int is_goup){
 	int startx = x;
 	int starty = y;
 	for (int i = 0; y < 50+starty; i++ ){
 		if (animal == 0){
-			if (bear[i] != 0x00000000) {
-				drawPixelARGB32(x, y, bear[i], 0);
-			}
+			if (bear[i] != 0x00000000 && is_goup) drawPixelARGB32(x, y, bear[i], 0);
+			else if (bear_back[i] != 0 && !is_goup) drawPixelARGB32(x, y, bear_back[i], 0);
 		}
 		else if (animal == 1){
-			if (fox[i] > 7914368 || fox[i] < 5202757) drawPixelARGB32(x, y, fox[i], 0);
+			if ((fox[i] > 7914368 || fox[i] < 5202757) && is_goup) drawPixelARGB32(x, y, fox[i], 0);
+			else if ((fox_back[i] != 0x7dc183) && !is_goup) drawPixelARGB32(x, y, fox_back[i], 0);
+			
 		}
 		else {
-			if (dog[i] < 8066061) drawPixelARGB32(x, y, dog[i], 0);
+			if (dog[i] < 8066061 && is_goup) drawPixelARGB32(x, y, dog[i], 0);
+			else if (dog_back[i] < 8066061 && !is_goup) drawPixelARGB32(x, y, dog_back[i], 0);
 		}
 		x++;
 		if (x == startx + 38){

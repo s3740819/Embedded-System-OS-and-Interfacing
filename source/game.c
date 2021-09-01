@@ -17,6 +17,7 @@ int log_contain[] = {0,0};
 unsigned long f1, t1, r1, f2, t2, r2, f3, t3, r3;
 unsigned long f4, t4, r4, f5, t5, r5, f6, t6, r6;
 int is_lose = 0;
+int is_goup = 1;
 
 void game_init(){
 	displayPicture(1024, 768, welcomescr);
@@ -102,7 +103,7 @@ void executeGame() {
 			}
 			else if (c == '\n') {
 				display_map(1,is_lose);
-				drawAvatar(animal_x,animal_y, animal);
+				drawAvatar(animal_x,animal_y, animal, is_goup);
 				state = round1;
 			}
 			break;
@@ -186,7 +187,7 @@ void main_game_handler(char c, int round) {
 			if ((round == 2 && animal_y != 170 && animal_y != 90) || round == 1 || (round == 3 && (animal_y >= 230 || animal_y <= 30))){
 				avatarMove(animal_x, animal_y, round);
 				animal_x -= 20;
-				drawAvatar(animal_x,animal_y, animal);
+				drawAvatar(animal_x,animal_y, animal, is_goup);
 			}
 		}
 	}
@@ -195,7 +196,7 @@ void main_game_handler(char c, int round) {
 			if ((round == 2 && animal_y != 170 && animal_y != 90) || round == 1 || (round == 3 && (animal_y >= 230 || animal_y <= 30))){
 				avatarMove(animal_x, animal_y, round);
 				animal_x += 20;
-				drawAvatar(animal_x,animal_y, animal);
+				drawAvatar(animal_x,animal_y, animal, is_goup);
 			}
 		}
 	}
@@ -231,7 +232,8 @@ void main_game_handler(char c, int round) {
 			else{
 				animal_y -= 20;
 			}
-			drawAvatar(animal_x,animal_y, animal);
+			is_goup = 1;
+			drawAvatar(animal_x,animal_y, animal, is_goup);
 		}
 	}
 	else if (c == 's' || c== 'S'){
@@ -266,7 +268,8 @@ void main_game_handler(char c, int round) {
 			else{
 				animal_y += 20;
 			}
-			drawAvatar(animal_x,animal_y, animal);
+			is_goup = 0;
+			drawAvatar(animal_x,animal_y, animal, is_goup);
 		}
 	}
 	if ((animal_y <= 10 && animal_x + 60 >= 995 && round < 3)  || (animal_y >= 670 && animal_x +50 >= 520 && animal_x <= 550 && round == 3)) {
@@ -379,7 +382,7 @@ void logRun(){
 		
 		if(log_contain[0] == 1){ //containing the avatar
 			animal_x = log_x[0] + 60;
-			drawAvatar(animal_x,animal_y, animal);
+			drawAvatar(animal_x,animal_y, animal, is_goup);
 		}
 
 		// get the current counter frequency
@@ -401,7 +404,7 @@ void logRun(){
 		
 		if(log_contain[1] == 1){
 			animal_x = log_x[1] + 60;
-			drawAvatar(animal_x,animal_y, animal);
+			drawAvatar(animal_x,animal_y, animal, is_goup);
 		}
 		
 		// get the current counter frequency
@@ -432,7 +435,7 @@ int is_hit(int round){
 void reset(int round){
 	animal_x = 100;
 	animal_y = 710;
-	
+	is_goup = 1;
 	if (round == 1){
 		state = round2;
 		
@@ -444,7 +447,7 @@ void reset(int round){
 		car_y[5] = 600;
 
 		display_map(2, is_lose);
-		drawAvatar(animal_x,animal_y, animal);
+		drawAvatar(animal_x,animal_y, animal, is_goup);
 	}
 	else if (round == 2){
 		state = round3;
@@ -475,7 +478,7 @@ void reset(int round){
 		car_x[10] = 780;
 		car_x[11] = 800;
 		display_map(3, is_lose);
-		drawAvatar(animal_x,animal_y, animal);
+		drawAvatar(animal_x,animal_y, animal, is_goup);
 		
 	}
 	else{

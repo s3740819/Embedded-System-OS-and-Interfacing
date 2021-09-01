@@ -1,7 +1,7 @@
 void displayPicture(int width, int height, const unsigned int picture[]);
 void display_avatars(int x, int y, int animal);
 void select(int animal);
-void drawAvatar(int x, int y, int animal);
+void drawAvatar(int x, int y, int animal, int is_goup);
 void avatarMove(int x, int y, int round);
 void draw_gate(int round);
 void display_map(int round, int is_lose);
