@@ -90,13 +90,14 @@ void main(){
 				uart_sendc(' ');
 				uart_sendc(c);
 				index -= 1;
+				input[index] = 0;
 			}
 		}
-		// If there is a character and no more 99 words (avoid jumping to new line automatically)
+		// If there is a character and no more 10 words (avoid jumping to new line automatically)
 		else if (index < 10 || c == '\n') {
 			// Send what the user type to the screen and store the input
 			uart_sendc(c);
-			if (c!= '\n'){
+			if (c!= '\n' && c != 8){
 				input[index] = c;
 				index +=1;
 			}
