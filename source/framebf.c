@@ -79,6 +79,14 @@ void drawPixelARGB32(int x, int y, unsigned int attr, int is_gray){
 	}
 }
 
+void drawDarkPixel(int x, int y, unsigned int attr){
+	int offs = (y * pitch) + (COLOR_DEPTH/8 * x);
+	//Access and assign each byte
+	*(fb+ offs    ) = ((attr>> 0 ) & 0xFF)/2; //BLUE
+	*(fb+ offs + 1) = ((attr>> 8 ) & 0xFF)/2; //GREEN
+	*(fb+ offs + 2) = ((attr>> 16) & 0xFF)/2; //RED
+	*(fb+ offs + 3) = ((attr>> 24) & 0xFF); //ALPHA
+}
 
 void resetScreen(){
 	for (int x = 0, y=0; y <768 ; x++){

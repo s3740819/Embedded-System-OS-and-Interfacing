@@ -1,10 +1,13 @@
 #include "../header/game/display.h"
 #include "../header/framebf.h"
+#include "../header/uart.h"
 #include "../header/game/picture/avatar.h"
 #include "../header/game/picture/map1.h"
 #include "../header/game/picture/map2.h"
 #include"../header/game/picture/map3.h"
 #include "../header/game/picture/objects.h"
+#include "../header/game/picture/instructions.h"
+
 
 void displayPicture(int width, int height, const unsigned int picture[]) {
 	for (int y = 0, x = 0, i = 0; y < height; i++) {
@@ -54,6 +57,30 @@ void display_skull(){
 			x = startx;
 		}
 	}
+}
+
+void display_instruction(int round){
+	for (int y = 0, x = 0, i = 0; y < 768; i++ ){
+			
+		if (round == 1)	drawDarkPixel(x, y, map1[i]);
+		else if (round ==2) drawDarkPixel(x, y, map2[i]);
+		else drawDarkPixel(x, y, map3[i]);
+
+		x++;
+		if (x == 1024){
+			y ++;
+			x = 0;
+		}
+	}
+	
+	for (int i = 75261*(round-1), x = 356, y = 262; y < 504; i++, x++){
+		if (instructions[i] < 13574923) drawPixelARGB32(x, y, instructions[i], 0);
+		if (x == 667){
+			x = 356;
+			y++;
+		}
+	}
+	while(uart_getc() != '\n');
 }
 
 void select(int animal){

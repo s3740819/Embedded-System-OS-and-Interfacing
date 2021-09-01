@@ -102,6 +102,7 @@ void executeGame() {
 				}
 			}
 			else if (c == '\n') {
+				display_instruction(1);
 				display_map(1,is_lose);
 				drawAvatar(animal_x,animal_y, animal, is_goup);
 				state = round1;
@@ -445,7 +446,7 @@ void reset(int round){
 		car_y[3] = 478;
 		car_y[4] = 538;
 		car_y[5] = 600;
-
+		display_instruction(2);
 		display_map(2, is_lose);
 		drawAvatar(animal_x,animal_y, animal, is_goup);
 	}
@@ -477,6 +478,7 @@ void reset(int round){
 		car_x[9] = 515;
 		car_x[10] = 780;
 		car_x[11] = 800;
+		display_instruction(3);
 		display_map(3, is_lose);
 		drawAvatar(animal_x,animal_y, animal, is_goup);
 		
