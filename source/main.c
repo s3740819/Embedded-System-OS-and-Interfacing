@@ -30,6 +30,7 @@ void task_handler(char input[]){
 		uart_puts(BMAG "Executed: Display help!\n\n" END);
 		display_help();
 	}
+	else uart_puts("Invalid Command! Enter 'Help' for more information!\n\n");
 }
 
 // Compare 2 strings
@@ -69,17 +70,21 @@ void display_hello_bg(){
 	}
 }
 
-void main(){
+void initialize(){
 	uart_init();
 	framebf_init();
-	
-	// ---------------- Input Variables ------------//
-	char input[] = {0,0,0,0,0,0,0,0,0,0};
-	int index = 0;
 	uart_puts("\n");
 	display_help();
 	uart_puts(BLK GRNB "BARE_OS>" END);
 	display_hello_bg();
+}
+
+void main(){
+	initialize();
+	// ---------------- Input Variables ------------//
+	char input[] = {0,0,0,0,0,0,0,0,0,0};
+	int index = 0;
+	
 	while(1) {
 		char c =  uart_get_CLI_input();
 		// If get backspace
