@@ -102,6 +102,7 @@ void executeGame() {
 				}
 			}
 			else if (c == '\n') {
+				reset(0);
 				display_instruction(1);
 				display_map(1,is_lose);
 				drawAvatar(animal_x,animal_y, animal, is_goup);
