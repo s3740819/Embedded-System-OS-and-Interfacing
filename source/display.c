@@ -175,22 +175,47 @@ void avatarMove(int x, int y, int round){
 }
 
 void display_map(int round, int is_lose){
-	for (int y = 0, x = 0, i = 0; y < 768; i++ ){
+	for (int y = 0, x = 0, i = 0; y < 768; i++, x++){
 		
 		if (round == 1)	drawPixelARGB32(x, y, map1[i], is_lose);
 		else if (round ==2) drawPixelARGB32(x, y, map2[i], is_lose);
 		else drawPixelARGB32(x, y, map3[i], is_lose);
 
-		x++;
 		if (x == 1024){
 			y ++;
 			x = 0;
 		}
-	}
+	}	
 	if (!is_lose) draw_gate(round);
 }
 
-
+void run_train(int x, int is_lose){
+	int startx = x, starti = 0;
+	if (x < 0){
+		startx = 0;
+		starti = startx - x;
+		x = 0;
+	}
+	for (int i = starti, y = 9; y < 70; i++, x++ ){
+		if(train[i] != 0xffffff) drawPixelARGB32(x, y, train[i], is_lose);
+		if (x == startx - starti + 606 || x == 1024){ 
+			y ++;
+			x = startx;
+			i = ((606)*(y-10))+ starti;
+		}
+	}
+	x = startx -starti + 606;
+	if (starti == 600) x = 0;
+	for (int i = (1024*9) + x, y =9; y < 70; i++, x++){
+		if (x>= 0 && x < 1024) drawPixelARGB32(x, y, map3[i], is_lose);
+		if (x == startx-starti + 616 || x == 1024){
+			x = startx -starti + 606;
+			if (starti == 600) x = 0; 
+			y++;
+			i = (1024*y) + x;
+		}
+	}
+}
 
 void draw_gate(int round){
 	int start_x = 0, start_y = 0;

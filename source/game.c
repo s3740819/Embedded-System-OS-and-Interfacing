@@ -14,8 +14,11 @@ int car_y[] = {102,164,226,288,350,464,526,588,0,0,0,0}; //lanes
 int log_x[] = {0, 860};
 int log_y[] = {90, 165};
 int log_contain[] = {0,0};
+int train_x = 1020;
 unsigned long f1, t1, r1, f2, t2, r2, f3, t3, r3;
 unsigned long f4, t4, r4, f5, t5, r5, f6, t6, r6;
+unsigned long f7, t7, r7, f8, t8, r8;
+
 int is_lose = 0;
 int is_goup = 1;
 
@@ -52,6 +55,14 @@ void game_init(){
 	asm volatile ("mrs %0, cntfrq_el0" : "=r"(f6));
 	// read the current counter
 	asm volatile ("mrs %0, cntpct_el0" : "=r"(t6));
+	// get the current counter frequency
+	asm volatile ("mrs %0, cntfrq_el0" : "=r"(f7));
+	// read the current counter
+	asm volatile ("mrs %0, cntpct_el0" : "=r"(t7));
+	// get the current counter frequency
+	asm volatile ("mrs %0, cntfrq_el0" : "=r"(f8));
+	// read the current counter
+	asm volatile ("mrs %0, cntpct_el0" : "=r"(t8));
 	
 	// calculate expire value for counter
 	t1+=((f1/1000)*90000)/1000;
@@ -60,8 +71,10 @@ void game_init(){
 	t4+=((f4/1000)*45000)/1000; 
 	t5+=((f5/1000)*80000)/1000; 
 	t6+=((f6/1000)*85000)/1000; 
-
+	t7+=((f7/1000)*5000000)/1000; 
+	t8+=((f8/1000)*40000)/1000; 
 }
+
 
 void executeGame() {
 	char c = 0;
@@ -77,6 +90,7 @@ void executeGame() {
 		asm volatile ("mrs %0, cntpct_el0" : "=r"(r4));
 		asm volatile ("mrs %0, cntpct_el0" : "=r"(r5));
 		asm volatile ("mrs %0, cntpct_el0" : "=r"(r6));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(r7));
 
 		switch(state) {
 		case welcome:
@@ -144,7 +158,8 @@ void executeGame() {
 			else control_button_handler(c, 2);
 	
 			break;
-		case round3:			
+		case round3:
+			trainRun();
 			// car run
 			carRun(3);
 			
@@ -277,6 +292,35 @@ void main_game_handler(char c, int round) {
 	if ((animal_y <= 10 && animal_x + 60 >= 995 && round < 3)  || (animal_y >= 670 && animal_x +50 >= 520 && animal_x <= 550 && round == 3)) {
 		reset(round);
 	}	
+}
+
+void trainRun(){
+	if (r7 >= t7){
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(r8));
+		if (r8 >= t8){
+			run_train(train_x, is_lose);
+			train_x-=10;
+			if (train_x + 606 < 0){
+				train_x = 1020;
+				// get the current counter frequency
+				asm volatile ("mrs %0, cntfrq_el0" : "=r"(f7));
+				// read the current counter
+				asm volatile ("mrs %0, cntpct_el0" : "=r"(t7));
+				// calculate expire value for counter
+				t7+=((f7/1000)*5000000)/1000;
+			}
+			// get the current counter frequency
+			asm volatile ("mrs %0, cntfrq_el0" : "=r"(f8));
+			// read the current counter
+			asm volatile ("mrs %0, cntpct_el0" : "=r"(t8));
+			// calculate expire value for counter
+			t8+=((f8/1000)*40000)/1000;
+			
+			if (is_lose == 0 && animal_y < 70 && animal_x >= train_x && animal_x <= train_x + 606){
+				is_lose = 1;
+			}
+		}
+	}
 }
 
 void carRun(int round){
@@ -482,7 +526,7 @@ void reset(int round){
 		car_x[8] = 680;
 		car_x[9] = 515;
 		car_x[10] = 800;
-		car_x[11] = 510;
+		car_x[11] = 515;
 		display_instruction(3);
 		display_map(3, is_lose);
 		drawAvatar(animal_x,animal_y, animal, is_goup);

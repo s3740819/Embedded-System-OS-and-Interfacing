@@ -7,3 +7,4 @@ void carRun(int round);
 void control_button_handler(char c, int round);
 void game_init();
 int is_hit(int round);
+void trainRun();
