@@ -8,7 +8,7 @@ void drawChar(unsigned char c, int x1, int y1, unsigned int attr) {
 	for(int y = y1; y < (y1 + 8); y++) {
 		int b = 0;
 		for(int x = x1; x < (x1 + 8); x++) {
-			if((font[c][a] & (1 << b)) == (0xFF & (1 << b))) {
+			if(font[c][a] & (1 << b)) {
 				drawPixelARGB32(x, y, attr, 0);
 			}
 			b++;
