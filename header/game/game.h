@@ -1,5 +1,5 @@
 #include "display.h"
-void StateMachine();
+void executeGame();
 void main_game_handler(char c, int round);
 void reset(int round);
 void logRun();

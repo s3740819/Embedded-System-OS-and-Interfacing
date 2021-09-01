@@ -3,7 +3,7 @@
 void task_handler(char input[]){
 	if (str_cmp(input, "game")){
 		uart_puts(BMAG "Executed: \"Road Crossing\" Game!\n\n" END);
-		StateMachine();
+		executeGame();
 		display_hello_bg();
 	}
 	else if (str_cmp(input, "video")){

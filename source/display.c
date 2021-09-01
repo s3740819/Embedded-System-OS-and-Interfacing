@@ -3,6 +3,7 @@
 #include "../header/game/picture/avatar.h"
 #include "../header/game/picture/map1.h"
 #include "../header/game/picture/map2.h"
+#include"../header/game/picture/map3.h"
 #include "../header/game/picture/objects.h"
 
 void displayPicture(int width, int height, const unsigned int picture[]) {
@@ -15,6 +16,7 @@ void displayPicture(int width, int height, const unsigned int picture[]) {
 		}
 	}
 }
+
 
 void display_avatars(int x, int y, int animal){
 	int startx = x;
@@ -110,7 +112,7 @@ int isTree(int x, int y, int round){
 	int startx = x;
 	int starty = y;
 	for (int i = (1024*starty) + startx; y < 50+starty; i++ ){
-		if((map1_temp[i] == 0x00ffffff && round == 1) || (map2_temp[i] == 0 && round == 2)) return 1;
+		if((map1_temp[i] == 0x00ffffff && round == 1) || (map2_temp[i] == 0 && round == 2) || (map3_temp[i] == 0 && round == 3)) return 1;
 		x++;
 		if (x == startx + 38 || x == 1024){
 			y ++;
@@ -126,8 +128,8 @@ void avatarMove(int x, int y, int round){
 	int starty = y;
 	for (int i = (1024*starty) + startx; y < 50+starty; i++ ){
 		if (round == 1) drawPixelARGB32(x, y, map1[i], 0);
-		else drawPixelARGB32(x, y, map2[i], 0);
-		
+		else if(round ==2) drawPixelARGB32(x, y, map2[i], 0);
+		else drawPixelARGB32(x, y, map3[i], 0);
 		x++;
 		if (x == startx + 38 || x == 1024){
 			y ++;
@@ -135,43 +137,45 @@ void avatarMove(int x, int y, int round){
 			i = (1024*y) + x;
 		}
 	}
-	if (x+38 >=965 && y<= 60){
-		draw_gate1();
+	if (x+38 >=965 && y<= 60 && round < 3){
+		draw_gate(round);
+	}
+	else if (x >= 520 && x <= 580 && y+50 >= 690){
+		draw_gate(round);
 	}
 }
 
-void display_map1(int is_lose){
+void display_map(int round, int is_lose){
 	for (int y = 0, x = 0, i = 0; y < 768; i++ ){
-		drawPixelARGB32(x, y, map1[i], is_lose);
+		
+		if (round == 1)	drawPixelARGB32(x, y, map1[i], is_lose);
+		else if (round ==2) drawPixelARGB32(x, y, map2[i], is_lose);
+		else drawPixelARGB32(x, y, map3[i], is_lose);
+
 		x++;
 		if (x == 1024){
 			y ++;
 			x = 0;
 		}
 	}
-	if (!is_lose) draw_gate1();
+	if (!is_lose) draw_gate(round);
 }
 
-void display_map2(int is_lose){
-	for (int y = 0, x = 0, i = 0; y < 768; i++ ){
-		drawPixelARGB32(x, y, map2[i], is_lose);
-		x++;
-		if (x == 1024){
-			y ++;
-			x = 0;
-		}
+
+
+void draw_gate(int round){
+	int start_x = 0, start_y = 0;
+	if (round < 3) start_x = 965;
+	else {
+		start_x = 520;
+		start_y = 698;
 	}
-	if (!is_lose) draw_gate1();
-
-}
-
-void draw_gate1(){
-	for (int i = 0, x = 965, y = 0; y < 50; i++){
+	for (int i = 0, x = start_x, y = start_y; y < start_y + 50; i++){
 		if(hole[i] < 12900000) drawPixelARGB32(x, y, hole[i], 0);
 		x++;
-		if (x == 1015){
+		if (x == start_x + 50){
 			y ++;
-			x = 965;
+			x = start_x;
 		}
 	}
 }
