@@ -36,8 +36,9 @@ void display_scrollable_pic(int x, int y){
 }
 
 void display_scroll_icon(){
-	for (int x = 461, y = 567, i = 0; y < 667; x++, i++){
+	for (int x = 461, y = 567, i = 0; y < 667; i++){
 		if (scroll_icon[i] < 0x202020) drawPixelARGB32(x, y, scroll_icon[i], 0);
+		x++;
 		if (x == 561){
 			x = 461;
 			y++;

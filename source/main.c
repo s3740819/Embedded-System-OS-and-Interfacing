@@ -1,40 +1,40 @@
 #include "../header/main.h"
 
-void task_handler(char input[]){
-	if (str_cmp(input, "game")){
+void taskHandler(char input[]){
+	if (strCmp(input, "game")){
 		uart_puts(BMAG "Executed: \"Road Crossing\" Game!\n\n" END);
 		executeGame();
 		display_hello_bg();
 	}
-	else if (str_cmp(input, "video")){
+	else if (strCmp(input, "video")){
 		uart_puts(BMAG "Executed: Display a video!\n\n" END);
-		execute_video();
+		execute_video_task();
 		display_hello_bg();
 	}
-	else if (str_cmp(input, "picture")){
+	else if (strCmp(input, "picture")){
 		uart_puts(BMAG "Executed: Display a picture!\n\n" END);
 		display_pic();
 		display_hello_bg();
 	}
-	else if (str_cmp(input, "s-picture")){
+	else if (strCmp(input, "s-picture")){
 		uart_puts(BMAG "Executed: Display a scrollable picture!\n\n" END);
 		execute_scrollable_pic();
 		display_hello_bg();
 	}
-	else if(str_cmp(input, "font")) {
+	else if(strCmp(input, "font")) {
 		uart_puts(BMAG "Executed: Display font!\n\n" END);
-		execute_drawing_fonts();
+		execute_font_task();
 		display_hello_bg();
 	}
-	else if(str_cmp(input, "help")){
+	else if(strCmp(input, "help")){
 		uart_puts(BMAG "Executed: Display help!\n\n" END);
-		display_help();
+		displayHelp();
 	}
 	else uart_puts("Invalid Command! Enter 'Help' for more information!\n\n");
 }
 
 // Compare 2 strings
-int str_cmp(char* c1, char* c2){
+int strCmp(char* c1, char* c2){
 	if (sizeof(c1) == sizeof(c2)){
 		for (int i = 0; i < sizeof(c1); i++){
 			if (c1[i] != c2[i]){
@@ -46,7 +46,7 @@ int str_cmp(char* c1, char* c2){
 	return 0;
 }
 
-void display_help(){
+void displayHelp(){
 	uart_puts("Command				Description\n");
 	uart_puts("----------------------------------------------------\n");
 	uart_puts("game				Execute the game\n");
@@ -61,8 +61,9 @@ void display_help(){
 }
 
 void display_hello_bg(){
-	for (int i = 0, x = 0, y = 0; y < 768; x++, i++){
+	for (int i = 0, x = 0, y = 0; y < 768; i++){
 		drawPixelARGB32(x, y, hello_background[i], 0);
+		x++;
 		if (x == 1024){
 			x= 0;
 			y++;
@@ -74,7 +75,7 @@ void initialize(){
 	uart_init();
 	framebf_init();
 	uart_puts("\n");
-	display_help();
+	displayHelp();
 	uart_puts(BLK GRNB "BARE_OS>" END);
 	display_hello_bg();
 }
@@ -111,7 +112,7 @@ void main(){
 		// If there is an enter, it will execute the input command
 		if(c == '\n'){
 			// Handle input command
-			task_handler(input);
+			taskHandler(input);
 
 			// Reset the input field
 			uart_puts(BLK GRNB "BARE_OS>" END);

@@ -7,6 +7,7 @@
 #include"../header/game/picture/map3.h"
 #include "../header/game/picture/objects.h"
 #include "../header/game/picture/instructions.h"
+#include "../header/game/picture/welcomepic.h"
 
 
 void displayPicture(int width, int height, const unsigned int picture[]) {
@@ -20,11 +21,18 @@ void displayPicture(int width, int height, const unsigned int picture[]) {
 	}
 }
 
+void displayWelcomeScreen(int character){
+	displayPicture(1024, 768, welcomescr);
+	displayAvatars(280,110, 0);
+	displayAvatars(490,110, 1);
+	displayAvatars(700,110, 2);
+	select(character);
+}
 
-void display_avatars(int x, int y, int animal){
+void displayAvatars(int x, int y, int animal){
 	int startx = x;
 	int starty = y;
-	for (int i = 0; y < 100+starty; i++ ){
+	for (int i = 0; y < 100+starty; i++){
 		if (animal == 2){
 			if (dogface[i] > 13891866 || dogface[i] < 11313592) {
 				drawPixelARGB32(x, y, dogface[i], 0);
@@ -44,12 +52,12 @@ void display_avatars(int x, int y, int animal){
 	}
 }
 
-void display_skull(){
+void displaySkull(){
 	int x = 362;
 	int y = 234;
 	int startx = x;
 	int starty = y;
-	for (int i = 0; y < 300 + starty; i++ ){
+	for (int i = 0; y < 300 + starty; i++){
 		if (dead_ava[i] != 0x00ffffff && dead_ava[i] != 0xfcfcfc && dead_ava[i] != 0xfefefe && dead_ava[i] != 0xfafafa) drawPixelARGB32(x, y, dead_ava[i], 0);
 		x++;
 		if (x == startx + 300){
@@ -59,13 +67,12 @@ void display_skull(){
 	}
 }
 
-int display_instruction(int round){
-	for (int y = 0, x = 0, i = 0; y < 768; i++ ){
+int displayInstruction(int round){
+	for (int y = 0, x = 0, i = 0; y < 768; i++){
 			
 		if (round == 1)	drawDarkPixel(x, y, map1[i]);
 		else if (round ==2) drawDarkPixel(x, y, map2[i]);
 		else drawDarkPixel(x, y, map3[i]);
-
 		x++;
 		if (x == 1024){
 			y ++;
@@ -73,8 +80,9 @@ int display_instruction(int round){
 		}
 	}
 	
-	for (int i = 75261*(round-1), x = 356, y = 262; y < 504; i++, x++){
+	for (int i = 75261*(round-1), x = 356, y = 262; y < 504; i++){
 		if (instructions[i] < 13574923) drawPixelARGB32(x, y, instructions[i], 0);
+		x++;
 		if (x == 667){
 			x = 356;
 			y++;
@@ -100,15 +108,14 @@ void select(int animal){
 	int x2 = x1 + 100;
 	for(int y = y1; y <= y2; y++ )
 		for(int x = x1; x <= x2; x++) {
-			if((x == x1 || x == x2) || (y == y1 || y == y2))
-				drawPixelARGB32(x, y, 0x00FFFF00, 0);
+			if((x == x1 || x == x2) || (y == y1 || y == y2)) drawPixelARGB32(x, y, 0x00FFFF00, 0);
 		}
 }
 
-void drawAvatar(int x, int y, int animal, int is_goup){
+void drawCharacterAvatar(int x, int y, int animal, int is_goup){
 	int startx = x;
 	int starty = y;
-	for (int i = 0; y < 50+starty; i++ ){
+	for (int i = 0; y < 50+starty; i++){
 		if (animal == 0){
 			if (bear[i] != 0x00000000 && is_goup) drawPixelARGB32(x, y, bear[i], 0);
 			else if (bear_back[i] != 0 && !is_goup) drawPixelARGB32(x, y, bear_back[i], 0);
@@ -133,7 +140,7 @@ void drawAvatar(int x, int y, int animal, int is_goup){
 void drawLog(int x, int y, int is_lose){
 	int startx = x;
 	int starty = y;
-	for (int i = 0; y < 60 + starty; i++ ){
+	for (int i = 0; y < 60 + starty; i++){
 		if (log[i] != 0x00ffffff) drawPixelARGB32(x, y, log[i], is_lose);
 		x++;
 		if (x == startx + 160){
@@ -146,7 +153,7 @@ void drawLog(int x, int y, int is_lose){
 int isTree(int x, int y, int round){
 	int startx = x;
 	int starty = y;
-	for (int i = (1024*starty) + startx; y < 50+starty; i++ ){
+	for (int i = (1024*starty) + startx; y < 50+starty; i++){
 		if((map1_temp[i] == 0x00ffffff && round == 1) || (map2_temp[i] == 0 && round == 2) || (map3_temp[i] == 0 && round == 3)) return 1;
 		x++;
 		if (x == startx + 38 || x == 1024){
@@ -158,10 +165,10 @@ int isTree(int x, int y, int round){
 	return 0;
 }
 
-void avatarMove(int x, int y, int round){
+void characterMove(int x, int y, int round){
 	int startx = x;
 	int starty = y;
-	for (int i = (1024*starty) + startx; y < 50+starty; i++ ){
+	for (int i = (1024*starty) + startx; y < 50+starty; i++){
 		if (round == 1) drawPixelARGB32(x, y, map1[i], 0);
 		else if(round ==2) drawPixelARGB32(x, y, map2[i], 0);
 		else drawPixelARGB32(x, y, map3[i], 0);
@@ -173,37 +180,38 @@ void avatarMove(int x, int y, int round){
 		}
 	}
 	if (x+38 >=965 && y<= 60 && round < 3){
-		draw_gate(round);
+		drawGate(round);
 	}
 	else if (x >= 520 && x <= 580 && y+50 >= 690){
-		draw_gate(round);
+		drawGate(round);
 	}
 }
 
-void display_map(int round, int is_lose){
-	for (int y = 0, x = 0, i = 0; y < 768; i++, x++){
+void displayMap(int round, int is_lose){
+	for (int y = 0, x = 0, i = 0; y < 768; i++){
 		
 		if (round == 1)	drawPixelARGB32(x, y, map1[i], is_lose);
 		else if (round ==2) drawPixelARGB32(x, y, map2[i], is_lose);
 		else drawPixelARGB32(x, y, map3[i], is_lose);
-
+		x++;
 		if (x == 1024){
 			y ++;
 			x = 0;
 		}
 	}	
-	if (!is_lose) draw_gate(round);
+	if (!is_lose) drawGate(round);
 }
 
-void run_train(int x, int is_lose){
+void trainMove(int x, int is_lose){
 	int startx = x, starti = 0;
 	if (x < 0){
 		startx = 0;
 		starti = startx - x;
 		x = 0;
 	}
-	for (int i = starti, y = 9; y < 70; i++, x++ ){
+	for (int i = starti, y = 9; y < 70; i++){
 		if(train[i] != 0xffffff) drawPixelARGB32(x, y, train[i], is_lose);
+		x++;
 		if (x == startx - starti + 606 || x == 1024){ 
 			y ++;
 			x = startx;
@@ -212,8 +220,9 @@ void run_train(int x, int is_lose){
 	}
 	x = startx -starti + 606;
 	if (starti == 600) x = 0;
-	for (int i = (1024*9) + x, y =9; y < 70; i++, x++){
+	for (int i = (1024*9) + x, y =9; y < 70; i++){
 		if (x>= 0 && x < 1024) drawPixelARGB32(x, y, map3[i], is_lose);
+		x++;
 		if (x == startx-starti + 616 || x == 1024){
 			x = startx -starti + 606;
 			if (starti == 600) x = 0; 
@@ -223,7 +232,7 @@ void run_train(int x, int is_lose){
 	}
 }
 
-void draw_gate(int round){
+void drawGate(int round){
 	int start_x = 0, start_y = 0;
 	
 	if (round < 3) start_x = 965;
@@ -246,7 +255,7 @@ void drawCar(int x, int y, int is_left, int is_lose) { //draw a car of 90x50 pix
 	if (y >380) start_index = 4500;
 	int startx = x;
 	int starty = y;
-	for (int i = start_index; y < 50 + starty; i++ ){
+	for (int i = start_index; y < 50 + starty; i++){
 		if (is_left){
 			if (car_left[i] < 8066061) drawPixelARGB32(x, y, car_left[i], is_lose);
 		}
@@ -266,7 +275,7 @@ void drawCar(int x, int y, int is_left, int is_lose) { //draw a car of 90x50 pix
 void carMove(int x, int y, int round, int is_lose) { //draw a 90x50 pixel background where a car was previously drawn
 	int startx = x;
 	int starty = y;
-	for (int i = (1024*starty) + startx; y < 50+starty; i++ ){
+	for (int i = (1024*starty) + startx; y < 50+starty; i++){
 		if (round == 1) drawPixelARGB32(x, y, map1[i], is_lose);
 		else drawPixelARGB32(x, y, map2[i], is_lose);
 		x++;
@@ -281,7 +290,7 @@ void carMove(int x, int y, int round, int is_lose) { //draw a 90x50 pixel backgr
 void logMove(int x, int y, int is_lose) { //draw a 90x50 pixel background where a car was previously drawn
 	int startx = x;
 	int starty = y;
-	for (int i = (1024*starty) + startx; y < 60+starty; i++ ){
+	for (int i = (1024*starty) + startx; y < 60+starty; i++){
 		drawPixelARGB32(x, y, map2[i], is_lose);
 		x++;
 		if (x == startx + 160){

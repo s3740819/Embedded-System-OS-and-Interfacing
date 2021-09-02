@@ -8,7 +8,7 @@
 /**
  * Wait N microsec (ARM CPU only)
  */
-void wait_msec(unsigned int n)
+void sleep(unsigned int n)
 {
     register unsigned long f, t, r;
     // get the current counter frequency
@@ -34,7 +34,7 @@ int display_video(){
 			y = 40;
 			frame ++;
 			if (uart_getc() == 27) return 0;
-			wait_msec(50000);
+			sleep(50000);
 		}
 		
 	}
@@ -52,7 +52,7 @@ void display_background(){
 	}
 }
 
-void execute_video(){
+void execute_video_task(){
 	display_background();
 	while(display_video());
 	
