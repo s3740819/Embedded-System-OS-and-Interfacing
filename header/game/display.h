@@ -13,5 +13,5 @@ void display_skull();
 void drawChar(unsigned char c, int x1, int y1, unsigned int attr);
 void drawString(char *s, int x1, int y1, unsigned int attr);
 int isTree(int x, int y, int round);
-void display_instruction(int round);
+int display_instruction(int round);
 void run_train(int x, int is_lose);

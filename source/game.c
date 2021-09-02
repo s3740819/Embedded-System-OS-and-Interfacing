@@ -18,7 +18,7 @@ int train_x = 1020;
 unsigned long f1, t1, r1, f2, t2, r2, f3, t3, r3;
 unsigned long f4, t4, r4, f5, t5, r5, f6, t6, r6;
 unsigned long f7, t7, r7, f8, t8, r8;
-
+int is_out = 0;
 int is_lose = 0;
 int is_goup = 1;
 
@@ -29,6 +29,7 @@ void game_init(){
 	display_avatars(700,110, 2);
 	state = welcome;
 	animal = 0;
+	is_out = 0;
 	select(animal);
 
 	// get the current counter frequency
@@ -80,7 +81,7 @@ void executeGame() {
 	char c = 0;
 	game_init();
 	
-	while(c != 27) {
+	while(c != 27 && !is_out) {
 		
 		c = uart_getc();
 		
@@ -117,7 +118,7 @@ void executeGame() {
 			}
 			else if (c == '\n') {
 				reset(0);
-				display_instruction(1);
+				if(!display_instruction(1)) is_out = 1;
 				display_map(1,is_lose);
 				drawAvatar(animal_x,animal_y, animal, is_goup);
 				state = round1;
@@ -129,7 +130,7 @@ void executeGame() {
 			carRun(1);
 			
 			if(is_lose){
-				if (is_lose == 1 ) {
+				if (is_lose == 1) {
 					display_map(1, is_lose);
 					display_skull();
 				}
@@ -495,7 +496,7 @@ void reset(int round){
 		car_y[3] = 478;
 		car_y[4] = 538;
 		car_y[5] = 600;
-		display_instruction(2);
+		if(!display_instruction(2)) is_out = 1;
 		display_map(2, is_lose);
 		drawAvatar(animal_x,animal_y, animal, is_goup);
 	}
@@ -527,7 +528,7 @@ void reset(int round){
 		car_x[9] = 515;
 		car_x[10] = 800;
 		car_x[11] = 515;
-		display_instruction(3);
+		if(!display_instruction(3)) is_out = 1;
 		display_map(3, is_lose);
 		drawAvatar(animal_x,animal_y, animal, is_goup);
 		

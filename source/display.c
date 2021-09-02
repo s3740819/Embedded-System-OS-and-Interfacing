@@ -59,7 +59,7 @@ void display_skull(){
 	}
 }
 
-void display_instruction(int round){
+int display_instruction(int round){
 	for (int y = 0, x = 0, i = 0; y < 768; i++ ){
 			
 		if (round == 1)	drawDarkPixel(x, y, map1[i]);
@@ -80,7 +80,13 @@ void display_instruction(int round){
 			y++;
 		}
 	}
-	while(uart_getc() != '\n');
+	
+	char c = 0;
+	while(c != '\n' && c != 27){
+		c = uart_getc();
+	}
+	if (c == '\n') return 1;
+	return 0;
 }
 
 void select(int animal){
