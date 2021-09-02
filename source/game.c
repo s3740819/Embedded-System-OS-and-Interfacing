@@ -70,7 +70,7 @@ void game_init(){
 	t3+=((f3/1000)*40000)/1000; 
 	t4+=((f4/1000)*45000)/1000; 
 	t5+=((f5/1000)*80000)/1000; 
-	t6+=((f6/1000)*85000)/1000; 
+	t6+=((f6/1000)*110000)/1000; 
 	t7+=((f7/1000)*5000000)/1000; 
 	t8+=((f8/1000)*40000)/1000; 
 }
@@ -408,7 +408,7 @@ void carRun(int round){
 			// read the current counter
 			asm volatile ("mrs %0, cntpct_el0" : "=r"(t6));
 			// calculate expire value for counter
-			t6+=((f6/1000)*85000)/1000;
+			t6+=((f6/1000)*110000)/1000;
 		}
 	}
 	if (is_lose == 0){
