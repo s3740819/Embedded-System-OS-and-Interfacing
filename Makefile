@@ -12,7 +12,7 @@ CFLAGS = -Wall -O2 -ffreestanding -nostdinc -nostdlib -nostartfiles
 LDFLAGS = -nostdlib -nostartfiles
 
 # make all
-all: $(BUILD_DIR)kernel8.img set_title
+all: $(BUILD_DIR)kernel8.img #set_title
 
 # convert .S file to .o file
 $(BUILD_DIR)start.o: $(SRC_DIR)start.S
@@ -37,9 +37,12 @@ run:
 	qemu-system-aarch64 -M raspi3 -kernel $(BUILD_DIR)kernel8.img -serial null -serial stdio
 	
 # Rebuild and run
-test: all run
+test: all music run
 
 # Set title for the command prompt 
 set_title:
 	TITLE Bare Metal_ASSESSMENT3 
+
+music:
+	cmd /C start .\bensound-jazzyfrenchy.mp3 --loop
 	
