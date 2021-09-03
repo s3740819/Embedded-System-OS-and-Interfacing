@@ -1,8 +1,8 @@
 // Draw functions
 void displayBackground(int width, int height, const unsigned int picture[]);
-void drawCharacterAva(int x, int y, int animal);
-void select(int animal);
-void drawCharacter(int x, int y, int animal, int is_goup);
+void drawCharacterAva(int x, int y, int character);
+void select(int character);
+void drawCharacter(int x, int y, int character, int is_goup);
 void eraseCharacter(int x, int y, int round);
 void drawGate(int round);
 void drawMap(int round, int is_lose);

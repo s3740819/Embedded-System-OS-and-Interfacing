@@ -92,13 +92,13 @@ int displayInstruction(int round){
 
 
 /**
- * Draw the select box outside the chosen animal
+ * Draw the select box outside the chosen character
  */
-void select(int animal){
+void select(int character){
 	int x1;
 	int y1 = 110;
-	if (animal == 0) x1 = 280;
-	else if (animal == 1) x1 = 490;
+	if (character == 0) x1 = 280;
+	else if (character == 1) x1 = 490;
 	else x1 = 700;
 
 	int y2 = y1 + 100;
@@ -113,16 +113,16 @@ void select(int animal){
 /**
  * Draw character faces
  */
-void drawCharacterAva(int x, int y, int animal){
+void drawCharacterAva(int x, int y, int character){
 	int start_x = x;
 	int start_y = y;
 	for (int i = 0; y < 100+start_y; i++){
 		
-		// Draw avatar for given animal
-		if (animal == 2){
+		// Draw avatar for given character
+		if (character == 2){
 			if (dogface[i] > 13891866 || dogface[i] < 11313592) drawPixelARGB32(x, y, dogface[i], 0);
 		}
-		else if (animal == 1){
+		else if (character == 1){
 			if (foxface[i] > 0xffffff || foxface[i] < 0xfffbef) drawPixelARGB32(x, y, foxface[i], 0);
 		}
 		else {
@@ -140,15 +140,15 @@ void drawCharacterAva(int x, int y, int animal){
 /**
  * Draw character after moving
  */
-void drawCharacter(int x, int y, int animal, int is_goup){
+void drawCharacter(int x, int y, int character, int is_goup){
 	int start_x = x;
 	int start_y = y;
 	for (int i = 0; y < 50+start_y; i++){
-		if (animal == 0){
+		if (character == 0){
 			if (bear[i] != 0x00000000 && is_goup) drawPixelARGB32(x, y, bear[i], 0);
 			else if (bear_back[i] != 0 && !is_goup) drawPixelARGB32(x, y, bear_back[i], 0);
 		}
-		else if (animal == 1){
+		else if (character == 1){
 			if ((fox[i] > 7914368 || fox[i] < 5202757) && is_goup) drawPixelARGB32(x, y, fox[i], 0);
 			else if ((fox_back[i] != 0x7dc183) && !is_goup) drawPixelARGB32(x, y, fox_back[i], 0);
 			
