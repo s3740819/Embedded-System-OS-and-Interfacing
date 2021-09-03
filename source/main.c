@@ -1,76 +1,8 @@
 #include "../header/main.h"
 
-void taskHandler(char input[]){
-	if (strCmp(input, "game")){
-		uart_puts(BMAG "Executed: \"Road Crossing\" Game!\n\n" END);
-		executeGame();
-		display_hello_bg();
-	}
-	else if (strCmp(input, "video")){
-		uart_puts(BMAG "Executed: Display a video!\n\n" END);
-		execute_video_task();
-		display_hello_bg();
-	}
-	else if (strCmp(input, "picture")){
-		uart_puts(BMAG "Executed: Display a picture!\n\n" END);
-		display_pic();
-		display_hello_bg();
-	}
-	else if (strCmp(input, "s-picture")){
-		uart_puts(BMAG "Executed: Display a scrollable picture!\n\n" END);
-		execute_scrollable_pic();
-		display_hello_bg();
-	}
-	else if(strCmp(input, "font")) {
-		uart_puts(BMAG "Executed: Display font!\n\n" END);
-		execute_font_task();
-		display_hello_bg();
-	}
-	else if(strCmp(input, "help")){
-		uart_puts(BMAG "Executed: Display help!\n\n" END);
-		displayHelp();
-	}
-	else uart_puts("Invalid Command! Enter 'Help' for more information!\n\n");
-}
-
-// Compare 2 strings
-int strCmp(char* c1, char* c2){
-	if (sizeof(c1) == sizeof(c2)){
-		for (int i = 0; i < sizeof(c1); i++){
-			if (c1[i] != c2[i]){
-				return 0;
-			}
-		}
-		return 1;
-	}
-	return 0;
-}
-
-void displayHelp(){
-	uart_puts("Command				Description\n");
-	uart_puts("----------------------------------------------------\n");
-	uart_puts("game				Execute the game\n");
-	uart_puts("picture				Display a picture\n");
-	uart_puts("s-picture			Display a scrollable picture\n");
-	uart_puts("font				Display team members' names with the OS font\n");
-	uart_puts("video				Display a video\n");
-	uart_puts("help				Display commands and descriptions\n\n");
-	uart_puts("***NOTE: "
-			"\n  Press ESC to exit the execution and return to the main menu!\n\n");
-
-}
-
-void display_hello_bg(){
-	for (int i = 0, x = 0, y = 0; y < 768; i++){
-		drawPixelARGB32(x, y, hello_background[i], 0);
-		x++;
-		if (x == 1024){
-			x= 0;
-			y++;
-		}
-	}
-}
-
+/**
+ * Initialize program
+ */
 void initialize(){
 	uart_init();
 	framebf_init();
@@ -80,6 +12,9 @@ void initialize(){
 	display_hello_bg();
 }
 
+/**
+ * Main function
+ */
 void main(){
 	initialize();
 	// ---------------- Input Variables ------------//
@@ -118,6 +53,89 @@ void main(){
 			uart_puts(BLK GRNB "BARE_OS>" END);
 			index = 0;
 			for(int i = 0; i < 10; i++) input[i] = 0;
+		}
+	}
+}
+
+
+/**
+ *  Task handler after getting the input command line 
+ */
+void taskHandler(char input[]){
+	if (strCmp(input, "game")){
+		uart_puts(BMAG "Executed: \"Road Crossing\" Game!\n\n" END);
+		executeGame();
+		display_hello_bg();
+	}
+	else if (strCmp(input, "video")){
+		uart_puts(BMAG "Executed: Display a video!\n\n" END);
+		execute_video_task();
+		display_hello_bg();
+	}
+	else if (strCmp(input, "picture")){
+		uart_puts(BMAG "Executed: Display a picture!\n\n" END);
+		display_pic();
+		display_hello_bg();
+	}
+	else if (strCmp(input, "s-picture")){
+		uart_puts(BMAG "Executed: Display a scrollable picture!\n\n" END);
+		execute_scrollable_pic();
+		display_hello_bg();
+	}
+	else if(strCmp(input, "font")) {
+		uart_puts(BMAG "Executed: Display font!\n\n" END);
+		execute_font_task();
+		display_hello_bg();
+	}
+	else if(strCmp(input, "help")){
+		uart_puts(BMAG "Executed: Display help!\n\n" END);
+		displayHelp();
+	}
+	else uart_puts("Invalid Command! Enter 'Help' for more information!\n\n");
+}
+
+/**
+ * Compare 2 strings 
+ */
+int strCmp(char* c1, char* c2){
+	if (sizeof(c1) == sizeof(c2)){
+		for (int i = 0; i < sizeof(c1); i++){
+			if (c1[i] != c2[i]){
+				return 0;
+			}
+		}
+		return 1;
+	}
+	return 0;
+}
+
+/**
+ *  Display help : all available commands
+ */
+void displayHelp(){
+	uart_puts("Command				Description\n");
+	uart_puts("----------------------------------------------------\n");
+	uart_puts("game				Execute the game\n");
+	uart_puts("picture				Display a picture\n");
+	uart_puts("s-picture			Display a scrollable picture\n");
+	uart_puts("font				Display team members' names with the OS font\n");
+	uart_puts("video				Display a video\n");
+	uart_puts("help				Display commands and descriptions\n\n");
+	uart_puts("***NOTE: "
+			"\n  Press ESC to exit the current task and return to the main menu!\n\n");
+
+}
+
+/**
+ *  Print hello back ground in qemu
+ */
+void display_hello_bg(){
+	for (int i = 0, x = 0, y = 0; y < 768; i++){
+		drawPixelARGB32(x, y, hello_background[i], 0);
+		x++;
+		if (x == 1024){
+			x= 0;
+			y++;
 		}
 	}
 }

@@ -2,11 +2,11 @@
 #include "../header/video/picture/frame2.h"
 #include "../header/video/picture/background.h"
 #include "../header/video/video.h"
-#include "../header/framebf.h"
-#include "../header/uart.h"
+#include "../header/piStuffs/framebf.h"
+#include "../header/piStuffs/uart.h"
 
 /**
- * Wait N microsec (ARM CPU only)
+ * Wait n micro-second
  */
 void sleep(unsigned int n)
 {
@@ -20,7 +20,11 @@ void sleep(unsigned int n)
     do{asm volatile ("mrs %0, cntpct_el0" : "=r"(r));}while(r<t);
 }
 
+/**
+ * Display the video frame by frame
+ */
 int display_video(){
+	// For each frame, draw it
 	for (unsigned int i = 0, x = 177, y =40, frame = 0 ; frame < 80; i++){
 		if (frame == 40) i = 0;
 		if (frame >= 40) drawPixelARGB32(x, y, frame2[i], 0);
@@ -30,10 +34,16 @@ int display_video(){
 			y++;
 			x = 177;
 		}
+		
+		// Ready to draw new frame
 		if (y == 440){
 			y = 40;
 			frame ++;
+			
+			// If there is an esc, terminate the task 
 			if (uart_getc() == 27) return 0;
+			
+			// Wait after drawing a frame
 			sleep(50000);
 		}
 		
@@ -41,6 +51,9 @@ int display_video(){
 	return 1;
 }
 
+/**
+ * Draw an background
+ */
 void display_background(){
 	for (unsigned int i = 0, x = 0, y =0 ; i < 786432; i++){
 		drawPixelARGB32(x, y, background[i], 0);
@@ -52,9 +65,14 @@ void display_background(){
 	}
 }
 
+
+/**
+ * Video execution
+ */
 void execute_video_task(){
 	display_background();
 	while(display_video());
 	
+	// Reset screen after terminating
 	resetScreen();
 }
