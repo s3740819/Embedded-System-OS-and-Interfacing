@@ -133,6 +133,8 @@ void display_hello_bg(){
 	for (int i = 0, x = 0, y = 0; y < 768; i++){
 		drawPixelARGB32(x, y, hello_background[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == 1024){
 			x= 0;
 			y++;

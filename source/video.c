@@ -30,12 +30,14 @@ int display_video(){
 		if (frame >= 40) drawPixelARGB32(x, y, frame2[i], 0);
 		else drawPixelARGB32(x, y, frame1[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == 845){
 			y++;
 			x = 177;
 		}
 		
-		// Ready to draw new frame
+		// Ready to draw new frame when the current frame is completely drawn 
 		if (y == 440){
 			y = 40;
 			frame ++;
@@ -58,6 +60,8 @@ void display_background(){
 	for (unsigned int i = 0, x = 0, y =0 ; i < 786432; i++){
 		drawPixelARGB32(x, y, background[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == 1024){
 			y++;
 			x = 0;

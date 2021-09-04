@@ -40,6 +40,8 @@ void execute_font_task(){
 	for (int i = 0, x=0, y=0; y< 768; i++){
 		drawPixelARGB32(x, y, font_bg[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if(x == 1024){
 			x = 0;
 			y++;

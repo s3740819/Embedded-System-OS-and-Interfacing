@@ -14,6 +14,8 @@ void display_pic(){
 	for (int x = 261, y= 133, i = 0; y < 633; i++){
 		drawPixelARGB32(x, y, picture[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == 761){
 			x = 261;
 			y++;
@@ -40,6 +42,8 @@ void display_scrollable_pic(int x, int y){
 	for (int i = (2351*start_y)+ start_x; y < start_y + 768; i++){
 		drawPixelARGB32(x-start_x, y-start_y, scrollable_picture[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 1024){
 			x = start_x;
 			y++;
@@ -58,6 +62,8 @@ void display_scroll_icon(){
 	for (int x = 461, y = 567, i = 0; y < 667; i++){
 		if (scroll_icon[i] < 0x202020) drawPixelARGB32(x, y, scroll_icon[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == 561){
 			x = 461;
 			y++;
