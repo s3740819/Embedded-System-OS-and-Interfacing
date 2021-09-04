@@ -1,7 +1,8 @@
 #include "../header/game/game.h"
+
+#include "../header/game/game_ui.h"
 #include "../header/piStuffs/uart.h"
 #include "../header/piStuffs/framebf.h"
-#include "../header/game/gameUI.h"
 #include "../header/game/picture/endpic.h"
 
 //---- Global variables declaration -------//
