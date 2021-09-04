@@ -17,6 +17,8 @@ void displayBackground(int width, int height, const unsigned int picture[]) {
 	for (int y = 0, x = 0, i = 0; y < height; i++) {
 		drawPixelARGB32(x, y, picture[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == width){
 			y++;
 			x = 0;
@@ -48,6 +50,8 @@ void displaySkull(){
 	for (int i = 0; y < 300 + start_y; i++){
 		if (dead_ava[i] != 0x00ffffff && dead_ava[i] != 0xfcfcfc && dead_ava[i] != 0xfefefe && dead_ava[i] != 0xfafafa) drawPixelARGB32(x, y, dead_ava[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 300){
 			y ++;
 			x = start_x;
@@ -76,6 +80,8 @@ int displayInstruction(int round){
 	for (int i = 75261*(round-1), x = 356, y = 262; y < 504; i++){
 		if (instructions[i] < 13574923) drawPixelARGB32(x, y, instructions[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == 667){
 			x = 356;
 			y++;
@@ -130,6 +136,8 @@ void drawCharacterAva(int x, int y, int character){
 			if (bearface[i] > 6075929 || bearface[i] < 901810) drawPixelARGB32(x, y, bearface[i], 0);
 		}
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 100){
 			y ++;
 			x = start_x;
@@ -159,6 +167,8 @@ void drawCharacter(int x, int y, int character, int is_goup){
 			else if (dog_back[i] < 8066061 && !is_goup) drawPixelARGB32(x, y, dog_back[i], 0);
 		}
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 38){
 			y ++;
 			x = start_x;
@@ -176,6 +186,8 @@ void drawMap(int round, int is_lose){
 		else if (round ==2) drawPixelARGB32(x, y, map2[i], is_lose);
 		else drawPixelARGB32(x, y, map3[i], is_lose);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == 1024){
 			y ++;
 			x = 0;
@@ -201,6 +213,8 @@ void drawTrain(int x, int is_lose){
 	for (int i = starti, y = 9; y < 70; i++){
 		if(train[i] != 0xffffff) drawPixelARGB32(x, y, train[i], is_lose);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x - starti + 606 || x == 1024){ 
 			y ++;
 			x = start_x;
@@ -214,6 +228,8 @@ void drawTrain(int x, int is_lose){
 	for (int i = (1024*9) + x, y =9; y < 70; i++){
 		if (x>= 0 && x < 1024) drawPixelARGB32(x, y, map3[i], is_lose);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x-starti + 616 || x == 1024){
 			x = start_x -starti + 606;
 			if (starti == 600) x = 0; 
@@ -238,6 +254,8 @@ void drawGate(int round){
 	for (int i = 0, x = start_x, y = start_y; y < start_y + 50; i++){
 		if(hole[i] < 12900000) drawPixelARGB32(x, y, hole[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 50){
 			y ++;
 			x = start_x;
@@ -269,6 +287,8 @@ void drawCar(int x, int y, int is_left, int is_lose) {
 		
 		skip:
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 90){
 			y ++;
 			x = start_x;
@@ -286,6 +306,8 @@ void drawLog(int x, int y, int is_lose){
 	for (int i = 0; y < 60 + start_y; i++){
 		if (log[i] != 0x00ffffff) drawPixelARGB32(x, y, log[i], is_lose);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 160){
 			y ++;
 			x = start_x;
@@ -305,6 +327,8 @@ void eraseCharacter(int x, int y, int round){
 		else if(round ==2) drawPixelARGB32(x, y, map2[i], 0);
 		else drawPixelARGB32(x, y, map3[i], 0);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 38 || x == 1024){
 			y ++;
 			x = start_x;
@@ -329,6 +353,8 @@ void eraseCar(int x, int y, int round, int is_lose) {
 		if (round == 1) drawPixelARGB32(x, y, map1[i], is_lose);
 		else drawPixelARGB32(x, y, map2[i], is_lose);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 90){
 			y ++;
 			x = start_x;
@@ -347,6 +373,8 @@ void eraseLog(int x, int y, int is_lose) {
 	for (int i = (1024*start_y) + start_x; y < 60+start_y; i++){
 		drawPixelARGB32(x, y, map2[i], is_lose);
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 160){
 			y ++;
 			x = start_x;
@@ -366,6 +394,8 @@ int isTree(int x, int y, int round){
 	for (int i = (1024*start_y) + start_x; y < 50+start_y; i++){
 		if((map1_temp[i] == 0x00ffffff && round == 1) || (map2_temp[i] == 0 && round == 2) || (map3_temp[i] == 0 && round == 3)) return 1;
 		x++;
+		
+		// If it reaches the width of the pic -> jump to next row of pixel
 		if (x == start_x + 38 || x == 1024){
 			y ++;
 			x = start_x;
