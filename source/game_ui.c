@@ -45,16 +45,16 @@ void displayWelcomeScreen(int character){
 void displaySkull(){
 	int x = 362;
 	int y = 234;
-	int start_x = x;
-	int start_y = y;
-	for (int i = 0; y < 300 + start_y; i++){
-		if (dead_ava[i] != 0x00ffffff && dead_ava[i] != 0xfcfcfc && dead_ava[i] != 0xfefefe && dead_ava[i] != 0xfafafa) drawPixelARGB32(x, y, dead_ava[i], 0);
+	int startX = x;
+	int startY = y;
+	for (int i = 0; y < 300 + startY; i++){
+		if (deadAva[i] != 0x00ffffff && deadAva[i] != 0xfcfcfc && deadAva[i] != 0xfefefe && deadAva[i] != 0xfafafa) drawPixelARGB32(x, y, deadAva[i], 0);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x + 300){
+		if (x == startX + 300){
 			y ++;
-			x = start_x;
+			x = startX;
 		}
 	}
 }
@@ -121,9 +121,9 @@ void select(int character){
  * Draw character faces
  */
 void drawCharacterAva(int x, int y, int character){
-	int start_x = x;
-	int start_y = y;
-	for (int i = 0; y < 100+start_y; i++){
+	int startX = x;
+	int startY = y;
+	for (int i = 0; y < 100+startY; i++){
 		
 		// Draw avatar for given character
 		if (character == 2){
@@ -138,9 +138,9 @@ void drawCharacterAva(int x, int y, int character){
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x + 100){
+		if (x == startX + 100){
 			y ++;
-			x = start_x;
+			x = startX;
 		}
 	}
 }
@@ -149,29 +149,29 @@ void drawCharacterAva(int x, int y, int character){
 /**
  * Draw character after moving
  */
-void drawCharacter(int x, int y, int character, int is_goup){
-	int start_x = x;
-	int start_y = y;
-	for (int i = 0; y < 50+start_y; i++){
+void drawCharacter(int x, int y, int character, int isMoveUp){
+	int startX = x;
+	int startY = y;
+	for (int i = 0; y < 50+startY; i++){
 		if (character == 0){
-			if (bear[i] != 0x00000000 && is_goup) drawPixelARGB32(x, y, bear[i], 0);
-			else if (bear_back[i] != 0 && !is_goup) drawPixelARGB32(x, y, bear_back[i], 0);
+			if (bear[i] != 0x00000000 && isMoveUp) drawPixelARGB32(x, y, bear[i], 0);
+			else if (bearBack[i] != 0 && !isMoveUp) drawPixelARGB32(x, y, bearBack[i], 0);
 		}
 		else if (character == 1){
-			if ((fox[i] > 7914368 || fox[i] < 5202757) && is_goup) drawPixelARGB32(x, y, fox[i], 0);
-			else if ((fox_back[i] != 0x7dc183) && !is_goup) drawPixelARGB32(x, y, fox_back[i], 0);
+			if ((fox[i] > 7914368 || fox[i] < 5202757) && isMoveUp) drawPixelARGB32(x, y, fox[i], 0);
+			else if ((foxBack[i] != 0x7dc183) && !isMoveUp) drawPixelARGB32(x, y, foxBack[i], 0);
 			
 		}
 		else {
-			if (dog[i] < 8066061 && is_goup) drawPixelARGB32(x, y, dog[i], 0);
-			else if (dog_back[i] < 8066061 && !is_goup) drawPixelARGB32(x, y, dog_back[i], 0);
+			if (dog[i] < 8066061 && isMoveUp) drawPixelARGB32(x, y, dog[i], 0);
+			else if (dogBack[i] < 8066061 && !isMoveUp) drawPixelARGB32(x, y, dogBack[i], 0);
 		}
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x + 38){
+		if (x == startX + 38){
 			y ++;
-			x = start_x;
+			x = startX;
 		}
 	}
 }
@@ -180,11 +180,11 @@ void drawCharacter(int x, int y, int character, int is_goup){
 /**
  * Draw map for given round
  */
-void drawMap(int round, int is_lose){
+void drawMap(int round, int isLose){
 	for (int y = 0, x = 0, i = 0; y < 768; i++){
-		if (round == 1)	drawPixelARGB32(x, y, map1[i], is_lose);
-		else if (round ==2) drawPixelARGB32(x, y, map2[i], is_lose);
-		else drawPixelARGB32(x, y, map3[i], is_lose);
+		if (round == 1)	drawPixelARGB32(x, y, map1[i], isLose);
+		else if (round ==2) drawPixelARGB32(x, y, map2[i], isLose);
+		else drawPixelARGB32(x, y, map3[i], isLose);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
@@ -195,43 +195,43 @@ void drawMap(int round, int is_lose){
 	}	
 	
 	// If the user is lose, dont need to draw gate
-	if (!is_lose) drawGate(round);
+	if (!isLose) drawGate(round);
 }
 
 
 /**
  * Draw the train for round 3
  */
-void drawTrain(int x, int is_lose){
+void drawTrain(int x, int isLose){
 	// Clear the previous position of train
-	int start_x = x, starti = 0;
+	int startX = x, starti = 0;
 	if (x < 0){
-		start_x = 0;
-		starti = start_x - x;
+		startX = 0;
+		starti = startX - x;
 		x = 0;
 	}
 	for (int i = starti, y = 9; y < 70; i++){
-		if(train[i] != 0xffffff) drawPixelARGB32(x, y, train[i], is_lose);
+		if(train[i] != 0xffffff) drawPixelARGB32(x, y, train[i], isLose);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x - starti + 606 || x == 1024){ 
+		if (x == startX - starti + 606 || x == 1024){ 
 			y ++;
-			x = start_x;
+			x = startX;
 			i = ((606)*(y-10))+ starti;
 		}
 	}
 	
 	// Draw the new position
-	x = start_x -starti + 606;
+	x = startX -starti + 606;
 	if (starti == 600) x = 0;
 	for (int i = (1024*9) + x, y =9; y < 70; i++){
-		if (x>= 0 && x < 1024) drawPixelARGB32(x, y, map3[i], is_lose);
+		if (x>= 0 && x < 1024) drawPixelARGB32(x, y, map3[i], isLose);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x-starti + 616 || x == 1024){
-			x = start_x -starti + 606;
+		if (x == startX-starti + 616 || x == 1024){
+			x = startX -starti + 606;
 			if (starti == 600) x = 0; 
 			y++;
 			i = (1024*y) + x;
@@ -244,21 +244,21 @@ void drawTrain(int x, int is_lose){
  * Draw the gate 
  */
 void drawGate(int round){
-	int start_x = 0, start_y = 0;
+	int startX = 0, startY = 0;
 	
-	if (round < 3) start_x = 965;
+	if (round < 3) startX = 965;
 	else {
-		start_x = 520;
-		start_y = 698;
+		startX = 520;
+		startY = 698;
 	}
-	for (int i = 0, x = start_x, y = start_y; y < start_y + 50; i++){
+	for (int i = 0, x = startX, y = startY; y < startY + 50; i++){
 		if(hole[i] < 12900000) drawPixelARGB32(x, y, hole[i], 0);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x + 50){
+		if (x == startX + 50){
 			y ++;
-			x = start_x;
+			x = startX;
 		}
 	}
 }
@@ -267,31 +267,31 @@ void drawGate(int round){
 /**
  * Draw cars for every round
  */
-void drawCar(int x, int y, int is_left, int is_lose) { 
-	int start_index = 0;
-	if (y >380) start_index = 4500;
-	int start_x = x;
-	int start_y = y;
-	for (int i = start_index; y < 50 + start_y; i++){
+void drawCar(int x, int y, int isLeft, int isLose) { 
+	int startIndex = 0;
+	if (y >380) startIndex = 4500;
+	int startX = x;
+	int startY = y;
+	for (int i = startIndex; y < 50 + startY; i++){
 		
 		// If there is car from left, draw car from left
-		if (is_left){
-			if (car_left[i] < 8066061) drawPixelARGB32(x, y, car_left[i], is_lose);
+		if (isLeft){
+			if (carLeft[i] < 8066061) drawPixelARGB32(x, y, carLeft[i], isLose);
 		}
 		
 		// Else, draw car from right
-		else if (car_right[i] != 0x00ffffff){
-			if (start_y <= 380  && car_right[i] >= 8066061) goto skip;
-			drawPixelARGB32(x, y, car_right[i], is_lose);
+		else if (carRight[i] != 0x00ffffff){
+			if (startY <= 380  && carRight[i] >= 8066061) goto skip;
+			drawPixelARGB32(x, y, carRight[i], isLose);
 		}
 		
 		skip:
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x + 90){
+		if (x == startX + 90){
 			y ++;
-			x = start_x;
+			x = startX;
 		}
 	}
 }
@@ -300,17 +300,17 @@ void drawCar(int x, int y, int is_left, int is_lose) {
 /**
  * Draw the log for round 2
  */
-void drawLog(int x, int y, int is_lose){
-	int start_x = x;
-	int start_y = y;
-	for (int i = 0; y < 60 + start_y; i++){
-		if (log[i] != 0x00ffffff) drawPixelARGB32(x, y, log[i], is_lose);
+void drawLog(int x, int y, int isLose){
+	int startX = x;
+	int startY = y;
+	for (int i = 0; y < 60 + startY; i++){
+		if (log[i] != 0x00ffffff) drawPixelARGB32(x, y, log[i], isLose);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x + 160){
+		if (x == startX + 160){
 			y ++;
-			x = start_x;
+			x = startX;
 		}
 	}
 }
@@ -320,18 +320,18 @@ void drawLog(int x, int y, int is_lose){
  * Clear the character before moving
  */
 void eraseCharacter(int x, int y, int round){
-	int start_x = x;
-	int start_y = y;
-	for (int i = (1024*start_y) + start_x; y < 50+start_y; i++){
+	int startX = x;
+	int startY = y;
+	for (int i = (1024*startY) + startX; y < 50+startY; i++){
 		if (round == 1) drawPixelARGB32(x, y, map1[i], 0);
 		else if(round ==2) drawPixelARGB32(x, y, map2[i], 0);
 		else drawPixelARGB32(x, y, map3[i], 0);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x + 38 || x == 1024){
+		if (x == startX + 38 || x == 1024){
 			y ++;
-			x = start_x;
+			x = startX;
 			i = (1024*y) + x;
 		}
 	}
@@ -346,18 +346,18 @@ void eraseCharacter(int x, int y, int round){
 /**
  * Clear the previous position of car
  */
-void eraseCar(int x, int y, int round, int is_lose) { 
-	int start_x = x;
-	int start_y = y;
-	for (int i = (1024*start_y) + start_x; y < 50+start_y; i++){
-		if (round == 1) drawPixelARGB32(x, y, map1[i], is_lose);
-		else drawPixelARGB32(x, y, map2[i], is_lose);
+void eraseCar(int x, int y, int round, int isLose) { 
+	int startX = x;
+	int startY = y;
+	for (int i = (1024*startY) + startX; y < 50+startY; i++){
+		if (round == 1) drawPixelARGB32(x, y, map1[i], isLose);
+		else drawPixelARGB32(x, y, map2[i], isLose);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x + 90){
+		if (x == startX + 90){
 			y ++;
-			x = start_x;
+			x = startX;
 			i = (1024*y) + x;
 		}
 	}
@@ -367,17 +367,17 @@ void eraseCar(int x, int y, int round, int is_lose) {
 /**
  * Clear the log 
  */
-void eraseLog(int x, int y, int is_lose) { 
-	int start_x = x;
-	int start_y = y;
-	for (int i = (1024*start_y) + start_x; y < 60+start_y; i++){
-		drawPixelARGB32(x, y, map2[i], is_lose);
+void eraseLog(int x, int y, int isLose) { 
+	int startX = x;
+	int startY = y;
+	for (int i = (1024*startY) + startX; y < 60+startY; i++){
+		drawPixelARGB32(x, y, map2[i], isLose);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x + 160){
+		if (x == startX + 160){
 			y ++;
-			x = start_x;
+			x = startX;
 			i = (1024*y) + x;
 		}
 	}
@@ -389,16 +389,16 @@ void eraseLog(int x, int y, int is_lose) {
  * Check whether there is a tree or not
  */
 int isTree(int x, int y, int round){
-	int start_x = x;
-	int start_y = y;
-	for (int i = (1024*start_y) + start_x; y < 50+start_y; i++){
-		if((map1_temp[i] == 0x00ffffff && round == 1) || (map2_temp[i] == 0 && round == 2) || (map3_temp[i] == 0 && round == 3)) return 1;
+	int startX = x;
+	int startY = y;
+	for (int i = (1024*startY) + startX; y < 50+startY; i++){
+		if((map1Temp[i] == 0x00ffffff && round == 1) || (map2Temp[i] == 0 && round == 2) || (map3Temp[i] == 0 && round == 3)) return 1;
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
-		if (x == start_x + 38 || x == 1024){
+		if (x == startX + 38 || x == 1024){
 			y ++;
-			x = start_x;
+			x = startX;
 			i = (1024*y) + x;
 		}
 	}

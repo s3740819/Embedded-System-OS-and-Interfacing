@@ -23,7 +23,7 @@ void sleep(unsigned int n)
 /**
  * Display the video frame by frame
  */
-int display_video(){
+int displayVideo(){
 	// For each frame, draw it
 	for (unsigned int i = 0, x = 177, y =40, frame = 0 ; frame < 80; i++){
 		if (frame == 40) i = 0;
@@ -56,7 +56,7 @@ int display_video(){
 /**
  * Draw an background
  */
-void display_background(){
+void displayVideoBg(){
 	for (unsigned int i = 0, x = 0, y =0 ; i < 786432; i++){
 		drawPixelARGB32(x, y, background[i], 0);
 		x++;
@@ -73,9 +73,9 @@ void display_background(){
 /**
  * Video execution
  */
-void execute_video_task(){
-	display_background();
-	while(display_video());
+void executeVideoTask(){
+	displayVideoBg();
+	while(displayVideo());
 	
 	// Reset screen after terminating
 	resetScreen();

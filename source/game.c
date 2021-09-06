@@ -10,20 +10,20 @@
 enum gameState {welcome, round1, round2, round3, winning};
 enum gameState state = welcome;
 int character = 0;
-int character_x = 100;
-int character_y = 710;
-int car_x[] = {0,933,600,500,0,300,800,150,0,0,0,0};	
-int car_y[] = {102,164,226,288,350,464,526,588,0,0,0,0};
-int log_x[] = {0, 860};
-int log_y[] = {90, 165};
-int log_contain[] = {0,0};
-int train_x = 1020;
-unsigned long debouncing_f, debouncing_t, deboucing_r, car_f, car_t, car_r;
-unsigned long log1_f, log1_t, log1_r, log2_f, log2_t, log2_r;
-unsigned long railroad_f, railroad_t, railroad_r, train_f, train_t, train_r;
-int is_esc = 0;
-int is_lose = 0;
-int is_moveUp = 1;
+int characterX = 100;
+int characterY = 710;
+int carX[] = {0,933,600,500,0,300,800,150,0,0,0,0};	
+int carY[] = {102,164,226,288,350,464,526,588,0,0,0,0};
+int logX[] = {0, 860};
+int logY[] = {90, 165};
+int logContain[] = {0,0};
+int trainX = 1020;
+unsigned long debouncingFreg, debouncingExpected, deboucingTimer, carFreg, carExpected, carTimer;
+unsigned long log1Freg, log1Expected, log1Timer, log2Freg, log2Expected, log2Timer;
+unsigned long railroadFreg, railroadExpected, railroadTimer, trainFreg, trainExpected, trainTimer;
+int isEsc = 0;
+int isLose = 0;
+int isMoveUp = 1;
 
 //--------------------------------------------//
 
@@ -34,34 +34,34 @@ void gameInit(){
 	// reset value 
 	state = welcome;
 	character = 0;
-	is_esc = 0;
+	isEsc = 0;
 
 	// Display welcome screen
 	displayWelcomeScreen(character);
 	
 	// Set frequencies for timers 
-	asm volatile ("mrs %0, cntfrq_el0" : "=r"(debouncing_f));
-	asm volatile ("mrs %0, cntfrq_el0" : "=r"(car_f));
-	asm volatile ("mrs %0, cntfrq_el0" : "=r"(log1_f));
-	asm volatile ("mrs %0, cntfrq_el0" : "=r"(log2_f));
-	asm volatile ("mrs %0, cntfrq_el0" : "=r"(railroad_f));
-	asm volatile ("mrs %0, cntfrq_el0" : "=r"(train_f));
+	asm volatile ("mrs %0, cntfrq_el0" : "=r"(debouncingFreg));
+	asm volatile ("mrs %0, cntfrq_el0" : "=r"(carFreg));
+	asm volatile ("mrs %0, cntfrq_el0" : "=r"(log1Freg));
+	asm volatile ("mrs %0, cntfrq_el0" : "=r"(log2Freg));
+	asm volatile ("mrs %0, cntfrq_el0" : "=r"(railroadFreg));
+	asm volatile ("mrs %0, cntfrq_el0" : "=r"(trainFreg));
 	
 	// Set current counter for timer
-	asm volatile ("mrs %0, cntpct_el0" : "=r"(debouncing_t));
-	asm volatile ("mrs %0, cntpct_el0" : "=r"(car_t));
-	asm volatile ("mrs %0, cntpct_el0" : "=r"(log1_t));
-	asm volatile ("mrs %0, cntpct_el0" : "=r"(log2_t));
-	asm volatile ("mrs %0, cntpct_el0" : "=r"(railroad_t));
-	asm volatile ("mrs %0, cntpct_el0" : "=r"(train_t));
+	asm volatile ("mrs %0, cntpct_el0" : "=r"(debouncingExpected));
+	asm volatile ("mrs %0, cntpct_el0" : "=r"(carExpected));
+	asm volatile ("mrs %0, cntpct_el0" : "=r"(log1Expected));
+	asm volatile ("mrs %0, cntpct_el0" : "=r"(log2Expected));
+	asm volatile ("mrs %0, cntpct_el0" : "=r"(railroadExpected));
+	asm volatile ("mrs %0, cntpct_el0" : "=r"(trainExpected));
 	
 	// set the expire value for counters
-	debouncing_t+=((debouncing_f/1000)*80000)/1000;
-	car_t+=((car_f/1000)*50000)/1000;
-	log1_t+=((log1_f/1000)*45000)/1000; 
-	log2_t+=((log2_f/1000)*80000)/1000; 
-	railroad_t+=((railroad_f/1000)*4750000)/1000; 
-	train_t+=((train_f/1000)*40000)/1000; 
+	debouncingExpected+=((debouncingFreg/1000)*80000)/1000;
+	carExpected+=((carFreg/1000)*50000)/1000;
+	log1Expected+=((log1Freg/1000)*45000)/1000; 
+	log2Expected+=((log2Freg/1000)*80000)/1000; 
+	railroadExpected+=((railroadFreg/1000)*4750000)/1000; 
+	trainExpected+=((trainFreg/1000)*40000)/1000; 
 }
 
 
@@ -75,17 +75,17 @@ void executeGame() {
 	gameInit();
 	
 	// If there is not the esc button 
-	while(c != 27 && !is_esc) {
+	while(c != 27 && !isEsc) {
 		
 		// Store the input of the user continously 
 		c = uart_getc();
 		
 		// Get the current time for the counter 
-		asm volatile ("mrs %0, cntpct_el0" : "=r"(deboucing_r));
-		asm volatile ("mrs %0, cntpct_el0" : "=r"(car_r));
-		asm volatile ("mrs %0, cntpct_el0" : "=r"(log1_r));
-		asm volatile ("mrs %0, cntpct_el0" : "=r"(log2_r));
-		asm volatile ("mrs %0, cntpct_el0" : "=r"(railroad_r));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(deboucingTimer));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(carTimer));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(log1Timer));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(log2Timer));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(railroadTimer));
 
 		// State machine
 		switch(state) {
@@ -112,9 +112,9 @@ void executeGame() {
 				reset(0);
 				
 				// Display the round 1 components
-				if(!displayInstruction(1)) is_esc = 1;
-				drawMap(1,is_lose);
-				drawCharacter(character_x,character_y, character, is_moveUp);
+				if(!displayInstruction(1)) isEsc = 1;
+				drawMap(1,isLose);
+				drawCharacter(characterX,characterY, character, isMoveUp);
 				state = round1;
 			}
 			break;
@@ -125,7 +125,7 @@ void executeGame() {
 			carRun(1);
 			
 			// Game handler for round 1
-			if(is_lose) gameOverHandler(c,1);
+			if(isLose) gameOverHandler(c,1);
 			else buttonHandler(c, 1);
 			break;
 			
@@ -138,7 +138,7 @@ void executeGame() {
 			logRun();
 			
 			// Game handler for round 2
-			if(is_lose) gameOverHandler(c,2);
+			if(isLose) gameOverHandler(c,2);
 			else buttonHandler(c, 2);
 			break;
 			
@@ -151,7 +151,7 @@ void executeGame() {
 			carRun(3);
 			
 			// Game handler for round 3
-			if(is_lose) gameOverHandler(c,3);
+			if(isLose) gameOverHandler(c,3);
 			else buttonHandler(c, 3);
 			break;
 			
@@ -171,11 +171,11 @@ void executeGame() {
  * Game over stage (when the user is hit)
  */
 void gameOverHandler(char c, int round){
-	if (is_lose == 1) {
-		drawMap(round, is_lose);
+	if (isLose == 1) {
+		drawMap(round, isLose);
 		displaySkull();
 	}
-	is_lose++;
+	isLose++;
 	if (c == '\n') reset(0);
 }
 
@@ -186,15 +186,15 @@ void gameOverHandler(char c, int round){
 void buttonHandler(char c, int round){
 	
 	// If there is not the debouncing time
-	if (deboucing_r >= debouncing_t && c != 0) {
+	if (deboucingTimer >= debouncingExpected && c != 0) {
 		
 		// Execute the button event handler
 		controlCharacter(c, round);
 
 		// Reset the debouncing timer
-		asm volatile ("mrs %0, cntfrq_el0" : "=r"(debouncing_f));
-		asm volatile ("mrs %0, cntpct_el0" : "=r"(debouncing_t));
-		debouncing_t+=((debouncing_f/1000)*80000)/1000;
+		asm volatile ("mrs %0, cntfrq_el0" : "=r"(debouncingFreg));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(debouncingExpected));
+		debouncingExpected+=((debouncingFreg/1000)*80000)/1000;
 	}
 }
 
@@ -207,24 +207,24 @@ void controlCharacter(char c, int round) {
 	// Request move left
 	if (c == 'a' || c == 'A'){
 		// If it is not out of the screen or is not blocked by a tree
-		if (character_x - 20 >= 0 && !isTree(character_x - 20, character_y, round)) {
+		if (characterX - 20 >= 0 && !isTree(characterX - 20, characterY, round)) {
 			// Condition for each round
-			if ((round == 2 && character_y != 170 && character_y != 90) || round == 1 || (round == 3 && (character_y >= 230 || character_y <= 30))){
+			if ((round == 2 && characterY != 170 && characterY != 90) || round == 1 || (round == 3 && (characterY >= 230 || characterY <= 30))){
 				// Erase the previous position and draw a new one
-				eraseCharacter(character_x, character_y, round);
-				character_x -= 20;
-				drawCharacter(character_x,character_y, character, is_moveUp);
+				eraseCharacter(characterX, characterY, round);
+				characterX -= 20;
+				drawCharacter(characterX,characterY, character, isMoveUp);
 			}
 		}
 	}
 	
 	// Request move right
 	else if (c == 'd' || c== 'D'){
-		if (character_x + 20 <= 986 && !isTree(character_x + 20, character_y, round)){
-			if ((round == 2 && character_y != 170 && character_y != 90) || round == 1 || (round == 3 && (character_y >= 230 || character_y <= 30))){
-				eraseCharacter(character_x, character_y, round);
-				character_x += 20;
-				drawCharacter(character_x,character_y, character, is_moveUp);
+		if (characterX + 20 <= 986 && !isTree(characterX + 20, characterY, round)){
+			if ((round == 2 && characterY != 170 && characterY != 90) || round == 1 || (round == 3 && (characterY >= 230 || characterY <= 30))){
+				eraseCharacter(characterX, characterY, round);
+				characterX += 20;
+				drawCharacter(characterX,characterY, character, isMoveUp);
 			}
 		}
 	}
@@ -232,100 +232,100 @@ void controlCharacter(char c, int round) {
 	// Request move up
 	if (c == 'w' || c == 'W'){
 		// If is is not out of screen and is not blocked by a tree
-		if (character_y - 20 >= 0 && !isTree(character_x, character_y - 20, round)) {
+		if (characterY - 20 >= 0 && !isTree(characterX, characterY - 20, round)) {
 			// Erase the previous position
-			eraseCharacter(character_x, character_y, round);
+			eraseCharacter(characterX, characterY, round);
 			
 			// If there is round 2 and there is the first log in the front
-			if(character_y == 230 && round ==2) { 
+			if(characterY == 230 && round ==2) { 
 				// If the use jump right on the log
-				if(character_x > log_x[1] && character_x < log_x[1] + 160) {
+				if(characterX > logX[1] && characterX < logX[1] + 160) {
 					// set the character on the log
-					character_y = 170;
-					character_x = log_x[1] + 60;
-					log_contain[1] = 1;
+					characterY = 170;
+					characterX = logX[1] + 60;
+					logContain[1] = 1;
 				}
 				// Else, fall to the rive -> dead
-				else is_lose = 1;
+				else isLose = 1;
 			}
 			
 			// If there is the second log in the front, same concept with the previous log
-			else if(character_y == 170 && round ==2){ 
-				if(character_x > log_x[0] && character_x < log_x[0] + 160){
-					drawLog(log_x[1], log_y[1], is_lose);
-					character_y = 90;
-					character_x = log_x[0] + 60;
-					log_contain[0] = 1;
-					log_contain[1] = 0;
+			else if(characterY == 170 && round ==2){ 
+				if(characterX > logX[0] && characterX < logX[0] + 160){
+					drawLog(logX[1], logY[1], isLose);
+					characterY = 90;
+					characterX = logX[0] + 60;
+					logContain[0] = 1;
+					logContain[1] = 0;
 				}
-				else is_lose = 1;
+				else isLose = 1;
 			}
 			
 			// If the user in on the last log, jump to the land
-			else if(character_y == 90 && round == 2){
-				drawLog(log_x[0], log_y[0], is_lose);
-				character_y = 30;
-				log_contain[0] = 0;
+			else if(characterY == 90 && round == 2){
+				drawLog(logX[0], logY[0], isLose);
+				characterY = 30;
+				logContain[0] = 0;
 			}
 			
 			// If there is round 3 and the user does not move to the bridge -> fall to the river 
-			else if (character_y == 230 && round == 3 && !((character_x >= 80 && character_x <= 140) || (character_x >= 860 && character_x <= 900))) is_lose = 1;
-			else character_y -= 20;
+			else if (characterY == 230 && round == 3 && !((characterX >= 80 && characterX <= 140) || (characterX >= 860 && characterX <= 900))) isLose = 1;
+			else characterY -= 20;
 		
 			// Draw the character in the new position with the up direction
-			is_moveUp = 1;
-			drawCharacter(character_x,character_y, character, is_moveUp);
+			isMoveUp = 1;
+			drawCharacter(characterX,characterY, character, isMoveUp);
 		}
 	}
 	
 	// Request move backward
 	else if (c == 's' || c== 'S'){
 		// If it is not out of screen and is not blocked by a tree
-		if (character_y + 20 <= 710 && !isTree(character_x, character_y + 20, round)){
+		if (characterY + 20 <= 710 && !isTree(characterX, characterY + 20, round)){
 			// Erase previous position
-			eraseCharacter(character_x, character_y, round);
+			eraseCharacter(characterX, characterY, round);
 			
 			// Work with the logs and work the same with the move up handler
-			if(character_y == 30 && round ==2){
-				if(character_x > log_x[0] && character_x < log_x[0] + 160){
-					character_y = 90;
-					character_x = log_x[0] + 60;
-					log_contain[0] = 1;
+			if(characterY == 30 && round ==2){
+				if(characterX > logX[0] && characterX < logX[0] + 160){
+					characterY = 90;
+					characterX = logX[0] + 60;
+					logContain[0] = 1;
 				}
-				else is_lose = 1;
+				else isLose = 1;
 			}
 			
 			// Work with the logs and the work same with the move up handler
-			else if(character_y == 90 && round ==2){
-				if(character_x > log_x[1] && character_x < log_x[1] + 160){
-					drawLog(log_x[0], log_y[0], is_lose);
-					character_y = 170;
-					character_x = log_x[1] + 60;
-					log_contain[1] = 1;
-					log_contain[0] = 0;
+			else if(characterY == 90 && round ==2){
+				if(characterX > logX[1] && characterX < logX[1] + 160){
+					drawLog(logX[0], logY[0], isLose);
+					characterY = 170;
+					characterX = logX[1] + 60;
+					logContain[1] = 1;
+					logContain[0] = 0;
 				}
-				else is_lose = 1;
+				else isLose = 1;
 			}
 			
 			// Work with the last log and work the same with the move up handler 
-			else if(character_y == 170 && round == 2){
-				drawLog(log_x[1], log_y[1], is_lose);
-				character_y = 230;
-				log_contain[1] = 0;
+			else if(characterY == 170 && round == 2){
+				drawLog(logX[1], logY[1], isLose);
+				characterY = 230;
+				logContain[1] = 0;
 			}
 			
 			// Work with the bridge and work the same with the move up handler
-			else if (character_y == 30 && round == 3 && !((character_x >= 80 && character_x <= 140) || (character_x >= 860 && character_x <= 900))) is_lose = 1;
-			else character_y += 20;
+			else if (characterY == 30 && round == 3 && !((characterX >= 80 && characterX <= 140) || (characterX >= 860 && characterX <= 900))) isLose = 1;
+			else characterY += 20;
 			
 			// Draw character in the new position with the down direction 
-			is_moveUp = 0;
-			drawCharacter(character_x,character_y, character, is_moveUp);
+			isMoveUp = 0;
+			drawCharacter(characterX,characterY, character, isMoveUp);
 		}
 	}
 	
 	// If pass the gate, move to new round/win
-	if ((character_y <= 10 && character_x + 60 >= 995 && round < 3)  || (character_y >= 670 && character_x +50 >= 520 && character_x <= 550 && round == 3)) {
+	if ((characterY <= 10 && characterX + 60 >= 995 && round < 3)  || (characterY >= 670 && characterX +50 >= 520 && characterX <= 550 && round == 3)) {
 		reset(round);
 	}	
 }
@@ -337,34 +337,34 @@ void controlCharacter(char c, int round) {
 void trainRun(){
 	
 	// For every 5s waitting timer
-	if (railroad_r >= railroad_t){
+	if (railroadTimer >= railroadExpected){
 		// count the timer for running the train
-		asm volatile ("mrs %0, cntpct_el0" : "=r"(train_r));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(trainTimer));
 		
 		// If reach the expired train timer, move train 1 step
-		if (train_r >= train_t){
+		if (trainTimer >= trainExpected){
 			// Draw train
-			drawTrain(train_x, is_lose);
-			train_x-=10;
+			drawTrain(trainX, isLose);
+			trainX-=10;
 			
 			// If the whole train is passed away, reset the train
-			if (train_x + 606 < 0){
-				train_x = 1020;
+			if (trainX + 606 < 0){
+				trainX = 1020;
 				
 				// Reset train timer
-				asm volatile ("mrs %0, cntfrq_el0" : "=r"(railroad_f));
-				asm volatile ("mrs %0, cntpct_el0" : "=r"(railroad_t));
-				railroad_t+=((railroad_f/1000)*4750000)/1000;
+				asm volatile ("mrs %0, cntfrq_el0" : "=r"(railroadFreg));
+				asm volatile ("mrs %0, cntpct_el0" : "=r"(railroadExpected));
+				railroadExpected+=((railroadFreg/1000)*4750000)/1000;
 			}
 			
 			// Reset timer for train move next step
-			asm volatile ("mrs %0, cntfrq_el0" : "=r"(train_f));
-			asm volatile ("mrs %0, cntpct_el0" : "=r"(train_t));
-			train_t+=((train_f/1000)*40000)/1000;
+			asm volatile ("mrs %0, cntfrq_el0" : "=r"(trainFreg));
+			asm volatile ("mrs %0, cntpct_el0" : "=r"(trainExpected));
+			trainExpected+=((trainFreg/1000)*40000)/1000;
 			
 			// If the train hit the character -> lose
-			if (is_lose == 0 && character_y < 70 && character_x >= train_x && character_x <= train_x + 606){
-				is_lose = 1;
+			if (isLose == 0 && characterY < 70 && characterX >= trainX && characterX <= trainX + 606){
+				isLose = 1;
 			}
 		}
 	}
@@ -376,120 +376,120 @@ void trainRun(){
  */
 void carRun(int round){
 	// time interval for car move a step
-	if (car_r >= car_t){
+	if (carTimer >= carExpected){
 		if (round == 1){
 			// For every car
 			for (int i = 0; i < 8; i++) {
 				// Clear the previous position
-				if(is_lose != 2) eraseCar(car_x[i], car_y[i], round, is_lose); 
+				if(isLose != 2) eraseCar(carX[i], carY[i], round, isLose); 
 				
 				// Indicate the car that move from right
 				if (i == 1 || i == 2 || i == 7) { 
 					
 					// Set new position
-					car_x[i] -= 20;
-					if (car_x[i] <= 0) car_x[i] = 933;
+					carX[i] -= 20;
+					if (carX[i] <= 0) carX[i] = 933;
 					
-					if (!(is_lose && car_x[i] >= 362 && car_x[i] <= 662)) drawCar(car_x[i], car_y[i], 0, is_lose); 
-					else car_x[i] = 310;
+					if (!(isLose && carX[i] >= 362 && carX[i] <= 662)) drawCar(carX[i], carY[i], 0, isLose); 
+					else carX[i] = 310;
 				}
 				
 				// The rest will move from left
 				else {
 					
 					// Set new position
-					car_x[i] += 20;
-					if (car_x[i] >= 1024) car_x[i] = 0;
+					carX[i] += 20;
+					if (carX[i] >= 1024) carX[i] = 0;
 					
-					if (!(is_lose && car_x[i]+45 >= 362 && car_x[i]+45 <= 662)) drawCar(car_x[i], car_y[i], 1, is_lose);
-					else car_x[i] = 664;
+					if (!(isLose && carX[i]+45 >= 362 && carX[i]+45 <= 662)) drawCar(carX[i], carY[i], 1, isLose);
+					else carX[i] = 664;
 				}
 			}
 			
 			// Reset the timer for moving cars
-			asm volatile ("mrs %0, cntfrq_el0" : "=r"(car_f));
-			asm volatile ("mrs %0, cntpct_el0" : "=r"(car_t));
-			car_t+=((car_f/1000)*50000)/1000;
+			asm volatile ("mrs %0, cntfrq_el0" : "=r"(carFreg));
+			asm volatile ("mrs %0, cntpct_el0" : "=r"(carExpected));
+			carExpected+=((carFreg/1000)*50000)/1000;
 		}
 		else if (round == 2) {
 			// For every car
 			for (int i = 0; i < 6; i++) { 
 				
 				// Clear the previous position
-				if(is_lose != 2) eraseCar(car_x[i], car_y[i], round, is_lose);
+				if(isLose != 2) eraseCar(carX[i], carY[i], round, isLose);
 				
 				// Indicate the car that move from right
 				if (i == 1 || i == 3) { 
 					
 					// Set the new position
-					car_x[i] -= 20; 
-					if (car_x[i] <= 0) car_x[i] = 933;
+					carX[i] -= 20; 
+					if (carX[i] <= 0) carX[i] = 933;
 					
-					if (!(is_lose && car_x[i] >= 362 && car_x[i] <= 662)) drawCar(car_x[i], car_y[i], 0, is_lose); // car heading right
-					else car_x[i] = 310;
+					if (!(isLose && carX[i] >= 362 && carX[i] <= 662)) drawCar(carX[i], carY[i], 0, isLose); // car heading right
+					else carX[i] = 310;
 				}
 				
 				// The rest will move from left
 				else {
 					
 					// Set the new position
-					car_x[i] += 20;
-					if (car_x[i] >= 1024) car_x[i] = 0;
+					carX[i] += 20;
+					if (carX[i] >= 1024) carX[i] = 0;
 					
-					if (!(is_lose && car_x[i]+45 >= 362 && car_x[i]+45 <= 662)) drawCar(car_x[i], car_y[i], 1, is_lose); // car heading left
-					else car_x[i] = 664;
+					if (!(isLose && carX[i]+45 >= 362 && carX[i]+45 <= 662)) drawCar(carX[i], carY[i], 1, isLose); // car heading left
+					else carX[i] = 664;
 				}
 			}
 		
 			// Reset the timer for moving cars
-			asm volatile ("mrs %0, cntfrq_el0" : "=r"(car_f));
-			asm volatile ("mrs %0, cntpct_el0" : "=r"(car_t));
-			car_t+=((car_f/1000)*40000)/1000;
+			asm volatile ("mrs %0, cntfrq_el0" : "=r"(carFreg));
+			asm volatile ("mrs %0, cntpct_el0" : "=r"(carExpected));
+			carExpected+=((carFreg/1000)*40000)/1000;
 		}
 		else {
 			// For every car
 			for (int i = 0; i < 12; i++) { 
 				
 				// Clear the previous position
-				if(is_lose != 2) eraseCar(car_x[i], car_y[i], round, is_lose); 
+				if(isLose != 2) eraseCar(carX[i], carY[i], round, isLose); 
 				
 				// Indicate the cars that move from right
 				if (i == 1 || i == 3 || i == 4|| i == 6 || i == 7 || i == 9 || i == 11) { 
 					
 					// Set new position
-					car_x[i] -= 20; 
+					carX[i] -= 20; 
 					
-					if (car_x[i] <= 0 && i < 6) car_x[i] = 400;
-					else if (car_x[i] <= 515 && i >= 6) car_x[i] = 933;
+					if (carX[i] <= 0 && i < 6) carX[i] = 400;
+					else if (carX[i] <= 515 && i >= 6) carX[i] = 933;
 					
-					if (!(is_lose && car_x[i] >= 362 && car_x[i] <= 662)) drawCar(car_x[i], car_y[i], 0, is_lose);
-					else car_x[i] = 310;
+					if (!(isLose && carX[i] >= 362 && carX[i] <= 662)) drawCar(carX[i], carY[i], 0, isLose);
+					else carX[i] = 310;
 				}
 				
 				// The rest will move from left
 				else {
 					
 					// Set new position
-					car_x[i] += 20;
+					carX[i] += 20;
 	
-					if (car_x[i] > 933 && i >= 6) car_x[i] = 512;
-					else if (car_x[i] > 400 && i < 6) car_x[i] = 0;
+					if (carX[i] > 933 && i >= 6) carX[i] = 512;
+					else if (carX[i] > 400 && i < 6) carX[i] = 0;
 	
-					if (!(is_lose && car_x[i]+45 >= 362 && car_x[i]+45 <= 662)) drawCar(car_x[i], car_y[i], 1, is_lose);
-					else car_x[i] = 664;
+					if (!(isLose && carX[i]+45 >= 362 && carX[i]+45 <= 662)) drawCar(carX[i], carY[i], 1, isLose);
+					else carX[i] = 664;
 				}
 			}
 			
 			// Reset the timer for moving cars
-			asm volatile ("mrs %0, cntfrq_el0" : "=r"(car_f));
-			asm volatile ("mrs %0, cntpct_el0" : "=r"(car_t));
-			car_t+=((car_f/1000)*110000)/1000;
+			asm volatile ("mrs %0, cntfrq_el0" : "=r"(carFreg));
+			asm volatile ("mrs %0, cntpct_el0" : "=r"(carExpected));
+			carExpected+=((carFreg/1000)*110000)/1000;
 		}
 	}
 	
 	// If the car hit the character -> lose
-	if (is_lose == 0){
-		if(isHit(round)) is_lose = 1;
+	if (isLose == 0){
+		if(isHit(round)) isLose = 1;
 	}
 	
 }
@@ -501,73 +501,73 @@ void carRun(int round){
 void logRun(){
 	
 	// If is lose -> reset the log
-	if (is_lose){
-		log_contain[0] = 0;
-		log_contain[1] = 0;
+	if (isLose){
+		logContain[0] = 0;
+		logContain[1] = 0;
 	}
 	
 	// First log timer is expired 
-	if(log1_r >= log1_t){
+	if(log1Timer >= log1Expected){
 		
 		// Erase the previous position
-		eraseLog(log_x[0], log_y[0], is_lose);
-		log_x[0] += 20; 
+		eraseLog(logX[0], logY[0], isLose);
+		logX[0] += 20; 
 		
 		// If the log is run out of the screen
-		if (log_x[0] > 924) {
+		if (logX[0] > 924) {
 			
 			// If the character is still on it -> lose
-			if (log_contain[0] == 1) is_lose = 1;
+			if (logContain[0] == 1) isLose = 1;
 			
 			// Else run again from the start position
-			log_x[0] = 0;
+			logX[0] = 0;
 		}
 		
 		// Draw log with new position
-		drawLog(log_x[0], log_y[0], is_lose);
+		drawLog(logX[0], logY[0], isLose);
 		
 		// Redraw character with the log
-		if(log_contain[0] == 1){
-			character_x = log_x[0] + 60;
-			drawCharacter(character_x,character_y, character, is_moveUp);
+		if(logContain[0] == 1){
+			characterX = logX[0] + 60;
+			drawCharacter(characterX,characterY, character, isMoveUp);
 		}
 
 		// Reset timer for first log
-		asm volatile ("mrs %0, cntfrq_el0" : "=r"(log1_f));
-		asm volatile ("mrs %0, cntpct_el0" : "=r"(log1_t));
-		log1_t+=((log1_f/1000)*45000)/1000;
+		asm volatile ("mrs %0, cntfrq_el0" : "=r"(log1Freg));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(log1Expected));
+		log1Expected+=((log1Freg/1000)*45000)/1000;
 	}
 	
 	// Second log timer is expired
-	if(log2_r >= log2_t){ 
+	if(log2Timer >= log2Expected){ 
 		
 		//clear the previous drawing
-		eraseLog(log_x[1], log_y[1], is_lose); 
-		log_x[1] -= 20; 
+		eraseLog(logX[1], logY[1], isLose); 
+		logX[1] -= 20; 
 		
 		// If the log run out of screen
-		if (log_x[1] < 0){
+		if (logX[1] < 0){
 			
 			// If the character is still on the log -> lose
-			if (log_contain[1] == 1) is_lose = 1;
+			if (logContain[1] == 1) isLose = 1;
 			
 			// Else run from start point
-			log_x[1] = 863;
+			logX[1] = 863;
 		}
 		
 		// Draw the log with new position
-		drawLog(log_x[1], log_y[1], is_lose);
+		drawLog(logX[1], logY[1], isLose);
 		
 		// If the character is on it, draw the character on it too
-		if(log_contain[1] == 1){
-			character_x = log_x[1] + 60;
-			drawCharacter(character_x,character_y, character, is_moveUp);
+		if(logContain[1] == 1){
+			characterX = logX[1] + 60;
+			drawCharacter(characterX,characterY, character, isMoveUp);
 		}
 		
 		// Reset timer for the second log
-		asm volatile ("mrs %0, cntfrq_el0" : "=r"(log2_f));
-		asm volatile ("mrs %0, cntpct_el0" : "=r"(log2_t));
-		log2_t+=((log2_f/1000)*80000)/1000;
+		asm volatile ("mrs %0, cntfrq_el0" : "=r"(log2Freg));
+		asm volatile ("mrs %0, cntpct_el0" : "=r"(log2Expected));
+		log2Expected+=((log2Freg/1000)*80000)/1000;
 	}
 }
 
@@ -585,8 +585,8 @@ int isHit(int round){
 	// For each car
 	for (int ii = 0; ii < num ; ii++ ){
 		// If the car overlap the character -> lose
-		if ((character_x >= car_x[ii] && character_x < car_x[ii] + 80) || ((character_x+ 37) >= car_x[ii] && (character_x +37)< car_x[ii] + 80))
-			if ((character_y >= car_y[ii] && character_y < car_y[ii] + 50) || ((character_y+ 50) >= car_y[ii] && (character_y +50)< car_y[ii] + 50)) 
+		if ((characterX >= carX[ii] && characterX < carX[ii] + 80) || ((characterX+ 37) >= carX[ii] && (characterX +37)< carX[ii] + 80))
+			if ((characterY >= carY[ii] && characterY < carY[ii] + 50) || ((characterY+ 50) >= carY[ii] && (characterY +50)< carY[ii] + 50)) 
 				return 1;
 	}
 	return 0;
@@ -599,28 +599,28 @@ int isHit(int round){
 void reset(int round){
 	
 	// Set the character back to the start position
-	character_x = 100;
-	character_y = 710;
-	is_moveUp = 1;
+	characterX = 100;
+	characterY = 710;
+	isMoveUp = 1;
 	
 	// If the round 1 is finished -> move to round 2
 	if (round == 1){
 		state = round2;
 		
 		// Set position for each car in round 2
-		car_y[0] = 292;
-		car_y[1] = 354;
-		car_y[2] = 416;
-		car_y[3] = 478;
-		car_y[4] = 538;
-		car_y[5] = 600;
+		carY[0] = 292;
+		carY[1] = 354;
+		carY[2] = 416;
+		carY[3] = 478;
+		carY[4] = 538;
+		carY[5] = 600;
 		
 		// Display instruction
-		if(!displayInstruction(2)) is_esc = 1;
+		if(!displayInstruction(2)) isEsc = 1;
 		
 		// Draw components for round 2
-		drawMap(2, is_lose);
-		drawCharacter(character_x,character_y, character, is_moveUp);
+		drawMap(2, isLose);
+		drawCharacter(characterX,characterY, character, isMoveUp);
 	}
 	
 	// If the round 2 is finished -> move to round 3
@@ -628,61 +628,61 @@ void reset(int round){
 		state = round3;
 		
 		// Set y position for each car in round 3
-		car_y[0] = 292;
-		car_y[1] = 354;
-		car_y[2] = 416;
-		car_y[3] = 478;
-		car_y[4] = 538;
-		car_y[5] = 600;
-		car_y[6] = 292;
-		car_y[7] = 354;
-		car_y[8] = 416;
-		car_y[9] = 478;
-		car_y[10] = 538;
-		car_y[11] = 600;
+		carY[0] = 292;
+		carY[1] = 354;
+		carY[2] = 416;
+		carY[3] = 478;
+		carY[4] = 538;
+		carY[5] = 600;
+		carY[6] = 292;
+		carY[7] = 354;
+		carY[8] = 416;
+		carY[9] = 478;
+		carY[10] = 538;
+		carY[11] = 600;
 		
 		// Set x position for each car in round 3
-		car_x[0] = 150;
-		car_x[1] = 0;
-		car_x[2] = 300;
-		car_x[3] = 100;
-		car_x[4] = 400;
-		car_x[5] = 220;
-		car_x[6] = 950;
-		car_x[7] = 615;
-		car_x[8] = 680;
-		car_x[9] = 515;
-		car_x[10] = 800;
-		car_x[11] = 515;
+		carX[0] = 150;
+		carX[1] = 0;
+		carX[2] = 300;
+		carX[3] = 100;
+		carX[4] = 400;
+		carX[5] = 220;
+		carX[6] = 950;
+		carX[7] = 615;
+		carX[8] = 680;
+		carX[9] = 515;
+		carX[10] = 800;
+		carX[11] = 515;
 		
 		// Display the instruction first
-		if(!displayInstruction(3)) is_esc = 1;
+		if(!displayInstruction(3)) isEsc = 1;
 		
 		// Then, display round3's components
-		drawMap(3, is_lose);
-		drawCharacter(character_x,character_y, character, is_moveUp);
+		drawMap(3, isLose);
+		drawCharacter(characterX,characterY, character, isMoveUp);
 	}
 	else{
 		
 		// Reset the y position of cars to the default one
-		car_y[7] = 588;
-		car_y[6] = 526;
-		car_y[5] = 464;
-		car_y[4] = 350;
-		car_y[3] = 288;
-		car_y[2] = 226;
-		car_y[1] = 164;
-		car_y[0] = 102;
+		carY[7] = 588;
+		carY[6] = 526;
+		carY[5] = 464;
+		carY[4] = 350;
+		carY[3] = 288;
+		carY[2] = 226;
+		carY[1] = 164;
+		carY[0] = 102;
 		
 		// Reset the x position of cars to the default one
-		car_x[7] = 0;
-		car_x[6] = 933;
-		car_x[5] = 600;
-		car_x[4] = 500;
-		car_x[3] = 0;
-		car_x[2] = 300;
-		car_x[1] = 800;
-		car_x[0] = 150;
+		carX[7] = 0;
+		carX[6] = 933;
+		carX[5] = 600;
+		carX[4] = 500;
+		carX[3] = 0;
+		carX[2] = 300;
+		carX[1] = 800;
+		carX[0] = 150;
 		
 		// If the user finish round 3 -> win 
 		if (round == 3){
@@ -695,9 +695,9 @@ void reset(int round){
 			
 			// Move back to welcome screen
 			displayWelcomeScreen(character);
-			log_contain[0] = 0;
-			log_contain[1] = 0;
-			is_lose = 0;
+			logContain[0] = 0;
+			logContain[1] = 0;
+			isLose = 0;
 			state = welcome;
 		}
 	}

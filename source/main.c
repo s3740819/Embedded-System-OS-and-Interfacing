@@ -9,7 +9,7 @@ void initialize(){
 	uart_puts("\n");
 	displayHelp();
 	uart_puts(BLK GRNB "BARE_OS>" END);
-	display_hello_bg();
+	displayHelloBg();
 }
 
 /**
@@ -35,10 +35,10 @@ void main(){
 			}
 		}
 		// If there is a character and no more 10 words (avoid jumping to new line automatically)
-		else if (index < 10 || c == '\n') {
+		else if ((c >= 32 && c < 127) || c == '\n') {
 			// Send what the user type to the screen and store the input
 			uart_sendc(c);
-			if (c!= '\n' && c != 8){
+			if (c!= '\n' && index < 10){
 				input[index] = c;
 				index +=1;
 			}
@@ -65,31 +65,34 @@ void taskHandler(char input[]){
 	if (strCmp(input, "game")){
 		uart_puts(BMAG "Executed: \"Road Crossing\" Game!\n\n" END);
 		executeGame();
-		display_hello_bg();
+		displayHelloBg();
 	}
 	else if (strCmp(input, "video")){
 		uart_puts(BMAG "Executed: Display a video!\n\n" END);
-		execute_video_task();
-		display_hello_bg();
+		executeVideoTask();
+		displayHelloBg();
 	}
 	else if (strCmp(input, "picture")){
 		uart_puts(BMAG "Executed: Display a picture!\n\n" END);
-		display_pic();
-		display_hello_bg();
+		displayPic();
+		displayHelloBg();
 	}
 	else if (strCmp(input, "s-picture")){
 		uart_puts(BMAG "Executed: Display a scrollable picture!\n\n" END);
-		execute_scrollable_pic();
-		display_hello_bg();
+		executeScrollablePic();
+		displayHelloBg();
 	}
 	else if(strCmp(input, "font")) {
 		uart_puts(BMAG "Executed: Display font!\n\n" END);
-		execute_font_task();
-		display_hello_bg();
+		executeFontTask();
+		displayHelloBg();
 	}
 	else if(strCmp(input, "help")){
 		uart_puts(BMAG "Executed: Display help!\n\n" END);
 		displayHelp();
+	}
+	else if(strCmp(input, "cls")){
+		uart_puts("\033c");
 	}
 	else uart_puts("Invalid Command! Enter 'Help' for more information!\n\n");
 }
@@ -120,6 +123,7 @@ void displayHelp(){
 	uart_puts("s-picture			Display a scrollable picture\n");
 	uart_puts("font				Display team members' names with the OS font\n");
 	uart_puts("video				Display a video\n");
+	uart_puts("cls				Clear the CLI\n");
 	uart_puts("help				Display commands and descriptions\n\n");
 	uart_puts("***NOTE: "
 			"\n  Press ESC to exit the current task and return to the main menu!\n\n");
@@ -129,9 +133,9 @@ void displayHelp(){
 /**
  *  Print hello back ground in qemu
  */
-void display_hello_bg(){
+void displayHelloBg(){
 	for (int i = 0, x = 0, y = 0; y < 768; i++){
-		drawPixelARGB32(x, y, hello_background[i], 0);
+		drawPixelARGB32(x, y, helloBackground[i], 0);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel

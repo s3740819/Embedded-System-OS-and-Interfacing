@@ -6,7 +6,7 @@
 /**
  * Display a picture
  */
-void display_pic(){
+void displayPic(){
 	// Reset the screen first
 	resetScreen();
 
@@ -34,13 +34,13 @@ void display_pic(){
 /**
  *  Display the scrollable picture
  */
-void display_scrollable_pic(int x, int y){
+void diplayScrollPic(int x, int y){
 	int start_x = x;
 	int start_y = y;
 	
 	// Draw the picture 
 	for (int i = (2351*start_y)+ start_x; y < start_y + 768; i++){
-		drawPixelARGB32(x-start_x, y-start_y, scrollable_picture[i], 0);
+		drawPixelARGB32(x-start_x, y-start_y, scrollablePicture[i], 0);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
@@ -52,15 +52,15 @@ void display_scrollable_pic(int x, int y){
 	}
 	
 	// Display scroll icon on the pic
-	display_scroll_icon();
+	displayScrollIcon();
 }
 
 /**
  * Display the scroll icon
  */
-void display_scroll_icon(){
+void displayScrollIcon(){
 	for (int x = 461, y = 567, i = 0; y < 667; i++){
-		if (scroll_icon[i] < 0x202020) drawPixelARGB32(x, y, scroll_icon[i], 0);
+		if (scrollIcon[i] < 0x202020) drawPixelARGB32(x, y, scrollIcon[i], 0);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel
@@ -74,10 +74,10 @@ void display_scroll_icon(){
 /**
  * scroll pic handler
  */
-void execute_scrollable_pic(){
+void executeScrollablePic(){
 	char c = 0; 
 	int x = 0, y = 0;
-	display_scrollable_pic(x, y);
+	diplayScrollPic(x, y);
 	
 	// If there is not esc
 	while(c!=27){
@@ -85,25 +85,25 @@ void execute_scrollable_pic(){
 		if (c == 'w' || c == 'W'){
 			if (y - 50 >= 0){
 				y -= 50;
-				display_scrollable_pic(x,y);
+				diplayScrollPic(x,y);
 			}
 		}
 		else if (c == 's' || c == 'S'){
 			if (y + 50 + 768 < 1500){
 				y += 50;
-				display_scrollable_pic(x,y);
+				diplayScrollPic(x,y);
 			}
 		}
 		else if (c == 'd' || c == 'D'){
 			if (x + 50 + 1024 < 2351){
 				x += 50;
-				display_scrollable_pic(x,y);
+				diplayScrollPic(x,y);
 			}
 		}
 		else if (c == 'a' || c == 'A'){
 			if (x - 50 >= 0){
 				x -= 50;
-				display_scrollable_pic(x,y);
+				diplayScrollPic(x,y);
 			}
 		}
 	}

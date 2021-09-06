@@ -34,11 +34,11 @@ void drawString(char *s, int x, int y, unsigned int attr) {
 /**
  *  Execute the "font" task
  */
-void execute_font_task(){
+void executeFontTask(){
 	
 	// Draw background first
 	for (int i = 0, x=0, y=0; y< 768; i++){
-		drawPixelARGB32(x, y, font_bg[i], 0);
+		drawPixelARGB32(x, y, fontBg[i], 0);
 		x++;
 		
 		// If it reaches the width of the pic -> jump to next row of pixel

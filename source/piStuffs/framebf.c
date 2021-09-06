@@ -68,10 +68,10 @@ void framebf_init(){
 /**
  * Draw pixel with color and its status (gray or not)
  */
-void drawPixelARGB32(int x, int y, unsigned int attr, int is_gray){
+void drawPixelARGB32(int x, int y, unsigned int attr, int isGray){
 	int offs = (y * pitch) + (COLOR_DEPTH/8 * x);
 
-	if (!is_gray){
+	if (!isGray){
 		*((unsigned int*)(fb + offs)) = attr;
 	}
 	else{
