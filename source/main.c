@@ -5,10 +5,36 @@
  */
 void initialize(){
 	uart_init();
-	framebf_init();
-	uart_puts("\n");
+	framebf_init();	
+	uart_puts("\a");
+	uart_puts("\n\n"  YEL);
+	uart_puts( "8888888888 8888888888 8888888888 88888888888 .d8888b.      d8888   .d8888b.   .d8888b.  \n");
+	uart_puts( "888        888        888            888    d88P  Y88b    d8P888  d88P  Y88b d88P  Y88b \n");
+	uart_puts( "888        888        888            888           888   d8P 888  888    888 888    888 \n");
+	uart_puts( "8888888    8888888    8888888        888         .d88P  d8P  888  Y88b. d888 888    888 \n");
+	uart_puts( "888        888        888            888     .od888P   d88   888    Y888P888 888    888 \n");
+	uart_puts( "888        888        888            888    d88P      8888888888        '888 888    888 \n");
+	uart_puts( "888        888        888            888    888              888  Y88b  d88P Y88b  d88P \n");
+	uart_puts( "8888888888 8888888888 8888888888     888    888888888        888   'Y8888P'   'Y8888P'  \n");
+	uart_puts( "                                                                                        \n");
+	uart_puts( "                                                                                        \n");
+	uart_puts( "888888b.         d8888 8888888b.  8888888888     .d88888b.   .d8888b.  \n");
+	uart_puts( "888  '88b       d88888 888   Y88b 888           d88P' 'Y88b d88P  Y88b \n");
+	uart_puts( "888  .88P      d88P888 888    888 888           888     888 Y88b.      \n");
+	uart_puts( "8888888K.     d88P 888 888   d88P 8888888       888     888  'Y888b.   \n");
+	uart_puts( "888  'Y88b   d88P  888 8888888P'  888           888     888     'Y88b. \n");
+	uart_puts( "888    888  d88P   888 888 T88b   888           888     888       '888 \n");
+	uart_puts( "888   d88P d8888888888 888  T88b  888           Y88b. .d88P Y88b  d88P \n");
+	uart_puts( "8888888P' d88P     888 888   T88b 8888888888     'Y88888P'   'Y8888P'  \n");
+	uart_puts( "                                                                        \n");
+	uart_puts( "                                                                        \n" END);
+	uart_puts(CYN  "           Developed By: Bao Tran - S3740819                            \n");
+	uart_puts(	   "                         Phuc To - s3758272                            \n");
+	uart_puts(     "                         Nguyen Le - s3777242                            \n" END);
+	uart_puts("\n \n");
 	displayHelp();
 	uart_puts(BLK GRNB "BARE_OS>" END);
+	
 	displayHelloBg();
 }
 
