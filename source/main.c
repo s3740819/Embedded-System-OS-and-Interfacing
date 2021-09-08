@@ -40,8 +40,9 @@ void main(){
 			uart_sendc(c);
 			if (c!= '\n' && index < 10){
 				input[index] = c;
-				index +=1;
 			}
+			index +=1;
+
 		}
 		
 		// If there is an enter, it will execute the input command
@@ -64,28 +65,39 @@ void main(){
 void taskHandler(char input[]){
 	if (strCmp(input, "game")){
 		uart_puts(BMAG "Executed: \"Road Crossing\" Game!\n\n" END);
+		uart_puts(YEL "** Press Esc to terminate the task!" END);
 		executeGame();
 		displayHelloBg();
+		uart_puts("\033[2K \r");
+
 	}
 	else if (strCmp(input, "video")){
 		uart_puts(BMAG "Executed: Display a video!\n\n" END);
+		uart_puts(YEL "** Press Esc to terminate the task!" END);
 		executeVideoTask();
 		displayHelloBg();
+		uart_puts("\033[2K \r");
 	}
 	else if (strCmp(input, "picture")){
 		uart_puts(BMAG "Executed: Display a picture!\n\n" END);
+		uart_puts(YEL "** Press Esc to terminate the task!" END);
 		displayPic();
 		displayHelloBg();
+		uart_puts("\033[2K \r");
 	}
 	else if (strCmp(input, "s-picture")){
 		uart_puts(BMAG "Executed: Display a scrollable picture!\n\n" END);
+		uart_puts(YEL "** Press Esc to terminate the task!" END);
 		executeScrollablePic();
 		displayHelloBg();
+		uart_puts("\033[2K \r");
 	}
 	else if(strCmp(input, "font")) {
 		uart_puts(BMAG "Executed: Display font!\n\n" END);
+		uart_puts(YEL "** Press Esc to terminate the task!" END);
 		executeFontTask();
 		displayHelloBg();
+		uart_puts("\033[2K \r");
 	}
 	else if(strCmp(input, "help")){
 		uart_puts(BMAG "Executed: Display help!\n\n" END);
