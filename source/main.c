@@ -4,8 +4,11 @@
  * Initialize program
  */
 void initialize(){
+	// Initialize pi's stuffs
 	uart_init();
 	framebf_init();	
+	
+	// Print Welcome message
 	uart_puts("\a");
 	uart_puts("\n\n"  YEL);
 	uart_puts( "8888888888 8888888888 8888888888 88888888888 .d8888b.      d8888   .d8888b.   .d8888b.  \n");
@@ -32,9 +35,14 @@ void initialize(){
 	uart_puts(	   "                         Phuc To - s3758272                            \n");
 	uart_puts(     "                         Nguyen Le - s3777242                            \n" END);
 	uart_puts("\n \n");
+	
+	// Display help to introduce our commands
 	displayHelp();
+	
+	// Command header
 	uart_puts(BLK GRNB "BARE_OS>" END);
 	
+	// Draw hello background to qemu
 	displayHelloBg();
 }
 
@@ -92,7 +100,11 @@ void taskHandler(char input[]){
 	if (strCmp(input, "game")){
 		uart_puts(BMAG "Executed: \"Road Crossing\" Game!\n\n" END);
 		uart_puts(YEL "** Press Esc to terminate the task!" END);
+		
+		// Task event handler
 		executeGame();
+		
+		// Reset
 		displayHelloBg();
 		uart_puts("\033[2K \r");
 
@@ -100,28 +112,44 @@ void taskHandler(char input[]){
 	else if (strCmp(input, "video")){
 		uart_puts(BMAG "Executed: Display a video!\n\n" END);
 		uart_puts(YEL "** Press Esc to terminate the task!" END);
+		
+		// Task event handler
 		executeVideoTask();
+		
+		// Reset
 		displayHelloBg();
 		uart_puts("\033[2K \r");
 	}
 	else if (strCmp(input, "picture")){
 		uart_puts(BMAG "Executed: Display a picture!\n\n" END);
 		uart_puts(YEL "** Press Esc to terminate the task!" END);
+		
+		// Task event handler
 		displayPic();
+		
+		// Reset
 		displayHelloBg();
 		uart_puts("\033[2K \r");
 	}
 	else if (strCmp(input, "s-picture")){
 		uart_puts(BMAG "Executed: Display a scrollable picture!\n\n" END);
 		uart_puts(YEL "** Press Esc to terminate the task!" END);
+		
+		// Task event handler
 		executeScrollablePic();
+		
+		// Reset
 		displayHelloBg();
 		uart_puts("\033[2K \r");
 	}
 	else if(strCmp(input, "font")) {
 		uart_puts(BMAG "Executed: Display font!\n\n" END);
 		uart_puts(YEL "** Press Esc to terminate the task!" END);
+		
+		// Task event handler
 		executeFontTask();
+		
+		// Reset
 		displayHelloBg();
 		uart_puts("\033[2K \r");
 	}
