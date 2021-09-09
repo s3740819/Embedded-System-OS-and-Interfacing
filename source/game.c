@@ -95,13 +95,13 @@ void executeGame() {
 			if (c == 'a' || c == 'A') {
 				if (character > 0) {
 					character--;
-					displayWelcomeScreen(character);
+					select(character);
 				}
 			}
 			else if (c == 'd' || c== 'D') {
 				if (character < 2) {
 					character ++;
-					displayWelcomeScreen(character);
+					select(character);
 				}
 			}
 			

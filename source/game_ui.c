@@ -104,10 +104,25 @@ int displayInstruction(int round){
 void select(int character){
 	int x1;
 	int y1 = 110;
+	
+	// Clear the previous selection
+	for (int i = 0 ; i < 3 ; i++){
+		if (i == 0) x1 = 280;
+		else if (i == 1) x1 = 490;
+		else x1 = 700;
+		for(int y = y1; y <= y1 + 100; y++ ){
+			for(int x = x1; x <= x1 + 100; x++) {
+				if((x == x1 || x == x1+100) || (y == y1 || y == y1+100)) drawPixelARGB32(x, y, welcomescr[(1024*y)+x], 0);
+			}
+		}
+	}
+	
+	// Get the position of the chosen character
 	if (character == 0) x1 = 280;
 	else if (character == 1) x1 = 490;
 	else x1 = 700;
-
+	
+	// Draw a new selection
 	int y2 = y1 + 100;
 	int x2 = x1 + 100;
 	for(int y = y1; y <= y2; y++ )
