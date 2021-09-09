@@ -9,7 +9,6 @@ void initialize(){
 	framebf_init();	
 	
 	// Print Welcome message
-	uart_puts("\a");
 	uart_puts("\n\n"  YEL);
 	uart_puts( "8888888888 8888888888 8888888888 88888888888 .d8888b.      d8888   .d8888b.   .d8888b.  \n");
 	uart_puts( "888        888        888            888    d88P  Y88b    d8P888  d88P  Y88b d88P  Y88b \n");
